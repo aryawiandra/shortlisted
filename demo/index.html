@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Demo LGD | Shortlisted</title>
+<meta name="description" content="Coba satu sesi LGD dengan empat peserta AI dan dapatkan rapor per aspek.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+<a class="skip" href="#main">Lewati ke konten</a>
+
+<header class="bar">
+  <div class="wrap bar-inner">
+    <a class="logo" href="/">shortlisted</a>
+    <span class="mode" id="mode" hidden></span>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <noscript><p class="note">Demo ini membutuhkan JavaScript. Aktifkan JavaScript lalu muat ulang halaman.</p></noscript>
+
+  <section id="screen-start" data-screen>
+    <div class="start">
+      <div>
+        <h1 tabindex="-1">Satu sesi LGD. Empat peserta yang tidak akan menunggumu siap.</h1>
+        <p class="lead">Baca kasus, berdiskusi dengan Raka, Sinta, Dimas, dan Ayu, lalu terima rapor per aspek lengkap dengan kutipan ucapanmu sendiri.</p>
+        <p class="note">Ini demo awal. Teks yang kamu ketik dikirim ke server hanya untuk membuat balasan dan tidak disimpan.</p>
+        <form id="access" class="access" hidden>
+          <label for="access-code">Kode akses demo</label>
+          <input id="access-code" name="code" type="text" autocomplete="off" required>
+          <p class="note" id="access-error" hidden></p>
+          <button class="btn btn-primary" type="submit">Masuk</button>
+        </form>
+      </div>
+      <div>
+        <h2 class="section-label">Pilih kasus</h2>
+        <div id="case-list" class="cases"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-brief" data-screen hidden>
+    <div class="brief">
+      <h2 id="brief-title" tabindex="-1"></h2>
+      <p id="brief-text" class="brief-text"></p>
+      <h3>Fakta kasus</h3>
+      <div id="brief-facts"></div>
+      <div class="brief-actions">
+        <button id="brief-start" class="btn btn-primary" type="button">Mulai diskusi sekarang</button>
+        <p class="countdown">Atau otomatis dimulai dalam <strong id="brief-clock">01:00</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-room" data-screen hidden>
+    <div class="room">
+      <aside class="side">
+        <div class="side-head">
+          <h2 id="room-title" tabindex="-1"></h2>
+          <span class="timer" id="timer" role="timer">06:00</span>
+        </div>
+        <details class="brief-details">
+          <summary>Kasus dan fakta</summary>
+          <p id="room-brief"></p>
+          <div id="room-facts"></div>
+        </details>
+        <ul class="roster" id="roster" aria-label="Peserta diskusi"></ul>
+      </aside>
+
+      <div class="stage">
+        <ol class="log" id="log" role="log" aria-live="polite" aria-label="Transkrip diskusi"></ol>
+        <p class="error-line" id="error" role="alert" hidden>
+          <span id="error-text"></span>
+          <button id="retry" class="link-btn" type="button" hidden>Coba lagi</button>
+        </p>
+        <form class="composer" id="composer">
+          <label class="sr-only" for="draft">Ucapanmu</label>
+          <textarea id="draft" rows="3" maxlength="600" enterkeyhint="send"
+            placeholder="Ketik ucapanmu. Enter untuk kirim, Shift+Enter untuk baris baru."></textarea>
+          <div class="composer-actions">
+            <button type="button" id="mic" class="btn btn-ghost" hidden aria-pressed="false">Bicara</button>
+            <button type="button" id="finish" class="btn btn-ghost">Akhiri dan lihat rapor</button>
+            <button type="submit" id="send" class="btn btn-primary">Kirim</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-result" data-screen hidden>
+    <div class="result">
+      <h2 tabindex="-1">Rapor sesimu</h2>
+      <p class="note" id="result-note" hidden></p>
+      <div id="result-body"></div>
+      <div class="result-actions">
+        <button id="again" class="btn btn-primary" type="button">Latihan lagi</button>
+        <a class="btn btn-ghost" href="/">Kembali ke beranda</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
