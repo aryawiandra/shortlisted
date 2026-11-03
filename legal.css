@@ -1,9 +1,9 @@
-:root { --paper: #F5F2EA; --ink: #13221B; --ink-soft: #4B5B52; --forest: #1D6A4C; --line: #D9D3C5; }
+:root { --paper: #FFFBEB; --ink: #1C1708; --ink-soft: #5A4F2E; --accent: #8A5A00; --sun: #FFD43B; --line: #E8DDB5; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 "Instrument Sans", system-ui, sans-serif; }
 main { width: min(720px, 100% - 32px); margin: 0 auto; padding: 48px 0 80px; }
 h1 { font: 800 44px/1.05 "Bricolage Grotesque", Georgia, serif; letter-spacing: -0.02em; margin: 28px 0 10px; }
 h2 { font: 700 22px/1.2 "Bricolage Grotesque", Georgia, serif; margin: 36px 0 8px; }
 p, li { color: var(--ink-soft); }
-a { color: var(--forest); }
+a { color: var(--accent); }
 .back { text-decoration: none; font-weight: 600; }
-.draft { border-left: 3px solid var(--forest); padding-left: 12px; font-size: 15px; }
+.draft { border-left: 3px solid var(--sun); padding-left: 12px; font-size: 15px; }
