@@ -97,8 +97,7 @@ function mountSimulator() {
         : null,
       result
         ? el("div", { class: "sim-next" },
-            el("button", { class: "btn btn-sun", type: "button", onclick: next },
-              isLast ? "Lihat rapormu" : "Momen berikutnya", el("span", { class: "arrow", "aria-hidden": "true" }, "→")))
+            el("button", { class: "btn btn-sun", type: "button", onclick: next }, isLast ? "Lihat rapormu" : "Momen berikutnya"))
         : null,
     ];
   }
@@ -112,11 +111,11 @@ function mountSimulator() {
       progress(),
       el("div", { class: "sim-end" },
         el("h3", { tabindex: "-1" }, "Itu baru tiga momen."),
-        el("p", {}, "Sesi sungguhan berjalan enam menit tanpa pilihan ganda. Kamu bicara dengan kata-katamu sendiri, dan rapornya mengutip ucapanmu."),
+        el("p", {}, "Di demo penuh, undangannya masuk ke email, kamu bergabung ke meeting dan bicara dengan kata-katamu sendiri, lalu rapornya menyusul lewat email."),
         el("ol", {}, recap)),
       el("div", { class: "sim-next" },
         el("button", { class: "btn btn-line", type: "button", onclick: reset }, "Coba jalur lain"),
-        el("a", { class: "btn btn-sun", href: DEMO_URL }, "Main sesi penuh", el("span", { class: "arrow", "aria-hidden": "true" }, "→"))),
+        el("a", { class: "btn btn-sun", href: DEMO_URL }, "Main demo penuh")),
     ];
   }
 

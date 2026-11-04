@@ -1,7 +1,6 @@
-// DOM builders for the demo. Every string goes in as text, never as HTML,
+// DOM builders shared by the demo. Every string goes in as text, never as HTML,
 // so applicant input and model output cannot inject markup.
 
-import { PERSONAS, personaById } from "../lib/personas.js";
 import { TIERS, groupByTier, radarChart, tierOf } from "./radar.js";
 
 export function el(tag, props = {}, ...children) {
@@ -16,56 +15,7 @@ export function el(tag, props = {}, ...children) {
   return node;
 }
 
-export const caseRow = (caseData, onPick) =>
-  el(
-    "button",
-    { class: "case-row", type: "button", onclick: () => onPick(caseData.id) },
-    el("span", { class: "case-industry" }, caseData.industry),
-    el("span", { class: "case-title" }, caseData.title),
-    el("span", { class: "case-cta" }, "Pilih kasus ini"),
-  );
-
 export const factList = (facts) => el("ul", { class: "facts" }, facts.map((fact) => el("li", {}, fact)));
-
-const initial = (name) => name.slice(0, 1).toUpperCase();
-
-export function roster(speakingId) {
-  const people = PERSONAS.map((persona) =>
-    el(
-      "li",
-      { class: `person${speakingId === persona.id ? " speaking" : ""}`, "data-id": persona.id },
-      el("span", { class: "avatar", "aria-hidden": "true" }, initial(persona.name)),
-      el("span", { class: "person-text" }, el("strong", {}, persona.name), el("small", {}, persona.tagline)),
-    ),
-  );
-  const you = el(
-    "li",
-    { class: "person you" },
-    el("span", { class: "avatar", "aria-hidden": "true" }, "K"),
-    el("span", { class: "person-text" }, el("strong", {}, "Kamu"), el("small", {}, "Pelamar")),
-  );
-  return [...people, you];
-}
-
-export function messageNode(message) {
-  if (message.speaker === "you") {
-    return el("li", { class: "msg you" }, el("span", { class: "msg-name" }, "Kamu"), el("p", {}, message.text));
-  }
-  const persona = personaById(message.speaker);
-  return el(
-    "li",
-    { class: "msg" },
-    el("span", { class: "msg-name" }, persona?.name ?? "Peserta", el("small", {}, persona?.tagline ?? "")),
-    el("p", {}, message.text),
-  );
-}
-
-export const typingNode = () =>
-  el(
-    "li",
-    { class: "msg typing", "aria-label": "Peserta sedang mengetik" },
-    el("span", { class: "dots", "aria-hidden": "true" }, el("i"), el("i"), el("i")),
-  );
 
 const MAX_SCORE = 5;
 const TIER_ICON = { kuat: "✓", cukup: "≈", latih: "!" };
@@ -80,12 +30,7 @@ const pips = (score) =>
 
 const tierBadge = (score) => {
   const tier = TIERS.find((t) => t.tier === tierOf(score));
-  return el(
-    "span",
-    { class: `tier-badge tier-${tier.tier}` },
-    el("span", { "aria-hidden": "true" }, TIER_ICON[tier.tier]),
-    tier.label,
-  );
+  return el("span", { class: `tier-badge tier-${tier.tier}` }, el("span", { "aria-hidden": "true" }, TIER_ICON[tier.tier]), tier.label);
 };
 
 function tierBoard(scores) {
@@ -103,9 +48,7 @@ function tierBoard(scores) {
           group.label,
           el("small", {}, group.hint),
         ),
-        group.items.length
-          ? el("ul", {}, group.items.map((item) => el("li", {}, item.label)))
-          : el("p", { class: "tier-empty" }, "Belum ada"),
+        group.items.length ? el("ul", {}, group.items.map((item) => el("li", {}, item.label))) : el("p", { class: "tier-empty" }, "Belum ada"),
       ),
     ),
   );

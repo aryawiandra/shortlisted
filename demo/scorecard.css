@@ -1,0 +1,59 @@
+/* The rapor inside the results email: radar for the shape, tier board for the verdict,
+   five-step meters and quotes for the detail. Tokens are scoped so the email can host it. */
+.scorecard {
+  --line: #E8DDB5;
+  --paper: #FFFBEB;
+  --paper-dim: #F5EBC8;
+  --alert: #D9480F;
+  --ink-soft: #5A4F2E;
+  --night-800: #1C1708;
+  --night-900: #14100A;
+  --sun-300: #FFE680;
+  --sun-400: #FFD43B;
+  --amber-700: #8A5A00;
+  font-size: 15px;
+}
+.scorecard h3 { margin: 26px 0 10px; font: 700 20px/1.2 var(--brand); letter-spacing: -0.01em; }
+.summary { margin: 0 0 16px; font: 700 20px/1.3 var(--brand); }
+
+.sc-top { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; align-items: center; padding: 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; }
+.sc-radar { margin: 0; padding-inline: 14px; }
+.sc-radar figcaption { font-size: 12.5px; color: var(--ink-soft); text-align: center; margin-top: 4px; }
+
+.tiers { display: grid; gap: 8px; }
+.tier { border-radius: 12px; padding: 12px 14px; background: #fff; border: 1px solid var(--line); }
+.tier h4 { margin: 0 0 8px; font-size: 15px; display: grid; grid-template-columns: auto 1fr; column-gap: 8px; align-items: center; }
+.tier h4 small { grid-column: 2; font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
+.tier-icon { grid-row: span 2; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 14px; font-weight: 800; }
+.tier-kuat .tier-icon { background: var(--night-800); color: var(--sun-400); }
+.tier-cukup .tier-icon { background: var(--sun-400); color: var(--night-900); }
+.tier-latih .tier-icon { background: var(--alert); color: #fff; }
+.tier.tier-latih:not(:has(.tier-empty)) { background: #FFF1E8; border-color: #F6C9AF; }
+.tier ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tier li { font-size: 13.5px; font-weight: 600; background: #fff; border: 1px solid var(--line); padding: 3px 10px; border-radius: 999px; }
+.tier-empty { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+
+.scores { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.score-row { padding: 16px 0; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+.score-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.score-head strong { font: 700 17px var(--brand); }
+.tier-badge { display: inline-flex; gap: 6px; align-items: center; font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.tier-badge.tier-kuat { background: var(--night-800); color: var(--sun-400); }
+.tier-badge.tier-cukup { background: var(--sun-300); color: var(--night-900); }
+.tier-badge.tier-latih { background: #FFE2D1; color: #7A2A05; }
+.score-meter { display: flex; align-items: center; gap: 12px; }
+.pips { display: inline-grid; grid-template-columns: repeat(5, 26px); gap: 4px; }
+.pips i { height: 9px; border-radius: 3px; background: var(--paper-dim); }
+.pips i.on { background: var(--amber-700); }
+.score-row.tier-latih .pips i.on { background: var(--alert); }
+.score-num { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13.5px; color: var(--ink-soft); }
+.score-comment { margin: 0; color: var(--ink-soft); }
+.scorecard blockquote { margin: 2px 0 0; padding: 8px 12px; background: var(--paper-dim); border-radius: 10px; font-size: 14px; font-style: italic; }
+.scorecard .steps { padding-left: 22px; margin: 0; }
+.scorecard .steps li { margin-bottom: 8px; }
+
+@media (max-width: 760px) {
+  .sc-top { grid-template-columns: minmax(0, 1fr); padding: 14px; gap: 14px; }
+  .sc-radar { max-width: 320px; margin-inline: auto; }
+  .pips { grid-template-columns: repeat(5, 22px); }
+}

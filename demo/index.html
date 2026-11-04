@@ -3,109 +3,174 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Demo LGD | Shortlisted</title>
-<meta name="description" content="Coba satu sesi LGD dengan empat peserta AI dan dapatkan rapor per aspek.">
+<title>Simulasi seleksi | Shortlisted</title>
+<meta name="description" content="Undangan LGD masuk ke email, kamu bergabung ke meeting dengan empat peserta AI, lalu rapor dikirim ke email. Simulasi seleksi dari Shortlisted.">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#F5B800">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%279%27 fill=%27%231C1708%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276.5%27 fill=%27%23FFD43B%27/%3E%3C/svg%3E">
-<link rel="stylesheet" href="demo.css">
+<link rel="stylesheet" href="os.css">
+<link rel="stylesheet" href="mail.css">
+<link rel="stylesheet" href="meet.css">
+<link rel="stylesheet" href="scorecard.css">
 <link rel="stylesheet" href="radar.css">
 </head>
 <body>
-<a class="skip" href="#main">Lewati ke konten</a>
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M18 11a1 1 0 1 0-2 0 4 4 0 0 1-8 0 1 1 0 1 0-2 0 6 6 0 0 0 5 5.9V19H9a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-2v-2.1A6 6 0 0 0 18 11z"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 6h10a2 2 0 0 1 2 2v1.5l3.4-2.3A1 1 0 0 1 21 8v8a1 1 0 0 1-1.6.8L16 14.5V16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-voice" viewBox="0 0 24 24"><path d="M4 9h3l5-4v14l-5-4H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></symbol>
+  <symbol id="i-cc" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm3.5 4A2.5 2.5 0 0 0 5 11.5v1A2.5 2.5 0 0 0 7.5 15H9v-1.5H7.5a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1H9V9H7.5zm6 0a2.5 2.5 0 0 0-2.5 2.5v1a2.5 2.5 0 0 0 2.5 2.5H15v-1.5h-1.5a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1H15V9h-1.5z"/></symbol>
+  <symbol id="i-keys" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm2 3v2h2V9H5zm4 0v2h2V9H9zm4 0v2h2V9h-2zm4 0v2h2V9h-2zM7 13v2h10v-2H7z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V8h4.5L13 3.5zM8 12v1.5h8V12H8zm0 3.5V17h8v-1.5H8z"/></symbol>
+  <symbol id="i-lines" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-4.4 3.5A1 1 0 0 1 3 19.7V5a2 2 0 0 1 1-2zm3 4.5V9h10V7.5H7zm0 3.5v1.5h7V11H7z"/></symbol>
+  <symbol id="i-leave" viewBox="0 0 24 24"><path d="M12 9c-3.3 0-6.4.9-8.9 2.6a2 2 0 0 0-.8 2.3l.6 1.7a1.5 1.5 0 0 0 1.9.9l3.1-1.1a1.5 1.5 0 0 0 1-1.4v-1.6a12 12 0 0 1 6.2 0V14a1.5 1.5 0 0 0 1 1.4l3.1 1.1a1.5 1.5 0 0 0 1.9-.9l.6-1.7a2 2 0 0 0-.8-2.3C18.4 9.9 15.3 9 12 9z"/></symbol>
+</svg>
 
-<header class="bar">
-  <div class="wrap bar-inner">
-    <a class="logo" href="/">shortlisted</a>
-    <span class="mode" id="mode" hidden></span>
-  </div>
-</header>
+<div class="desktop" id="desktop" inert>
+  <header class="menubar">
+    <span class="mb-brand">Shortlisted</span>
+    <span class="mb-app" id="mb-app">Kotak Masuk</span>
+    <span class="mb-spacer"></span>
+    <span class="mb-sim" title="Perusahaan, email, dan peserta di simulasi ini fiktif.">Simulasi</span>
+    <span class="mb-mode" id="mb-mode" hidden></span>
+    <span class="mb-clock" id="mb-clock"></span>
+  </header>
 
-<main id="main" class="wrap">
-  <noscript><p class="note">Demo ini membutuhkan JavaScript. Aktifkan JavaScript lalu muat ulang halaman.</p></noscript>
-
-  <section id="screen-start" data-screen>
-    <div class="start">
-      <div>
-        <h1 tabindex="-1">Satu sesi LGD. Empat peserta yang tidak akan menunggumu siap.</h1>
-        <p class="lead">Baca kasus, berdiskusi dengan Raka, Sinta, Dimas, dan Ayu, lalu terima rapor per aspek lengkap dengan kutipan ucapanmu sendiri.</p>
-        <p class="note">Ini demo awal. Teks yang kamu ketik dikirim ke server hanya untuk membuat balasan dan tidak disimpan.</p>
-        <form id="access" class="access" hidden>
-          <label for="access-code">Kode akses demo</label>
-          <input id="access-code" name="code" type="text" autocomplete="off" required>
-          <p class="note" id="access-error" hidden></p>
-          <button class="btn btn-primary" type="submit">Masuk</button>
-        </form>
+  <main class="workspace">
+    <section class="window mail-window" id="mail-window" aria-labelledby="mail-heading" hidden>
+      <div class="mail-pane">
+        <header class="mail-head">
+          <h1 id="mail-heading">Kotak Masuk</h1>
+          <p class="mail-count" id="mail-count"></p>
+          <p class="mail-status" id="mail-status" role="status" hidden></p>
+        </header>
+        <ul class="mail-list" id="mail-list" aria-label="Daftar email"></ul>
       </div>
-      <div>
-        <h2 class="section-label">Pilih kasus</h2>
-        <div id="case-list" class="cases"></div>
-      </div>
-    </div>
-  </section>
+      <article class="mail-reader" id="mail-reader"></article>
+    </section>
 
-  <section id="screen-brief" data-screen hidden>
-    <div class="brief">
-      <h2 id="brief-title" tabindex="-1"></h2>
-      <p id="brief-text" class="brief-text"></p>
-      <h3>Fakta kasus</h3>
-      <div id="brief-facts"></div>
-      <div class="brief-actions">
-        <button id="brief-start" class="btn btn-primary" type="button">Mulai diskusi sekarang</button>
-        <p class="countdown">Atau otomatis dimulai dalam <strong id="brief-clock">01:00</strong></p>
-      </div>
-    </div>
-  </section>
+    <section class="window meet-window" id="meet-window" aria-label="Shortlisted Meet" hidden>
+      <header class="meet-bar">
+        <span class="meet-brand">Shortlisted Meet</span>
+        <span class="meet-title" id="meet-title"></span>
+        <span class="meet-rec" id="meet-rec" hidden>Asesor mencatat</span>
+        <span class="meet-timer" id="meet-timer">06:00</span>
+      </header>
 
-  <section id="screen-room" data-screen hidden>
-    <div class="room">
-      <aside class="side">
-        <div class="side-head">
-          <h2 id="room-title" tabindex="-1"></h2>
-          <span class="timer" id="timer" role="timer">06:00</span>
+      <div class="lobby" id="lobby">
+        <div class="lobby-preview" id="lobby-preview">
+          <video id="lobby-video" autoplay muted playsinline hidden></video>
+          <span class="lobby-initials" id="lobby-initials" aria-hidden="true">K</span>
+          <div class="lobby-toggles">
+            <button class="round" id="lobby-cam" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-cam"/></svg><span>Kamera</span></button>
+            <button class="round" id="lobby-voice" type="button" aria-pressed="true"><svg aria-hidden="true"><use href="#i-voice"/></svg><span>Suara peserta</span></button>
+            <button class="round" id="lobby-cc" type="button" aria-pressed="true"><svg aria-hidden="true"><use href="#i-cc"/></svg><span>Teks</span></button>
+          </div>
         </div>
-        <details class="brief-details">
-          <summary>Kasus dan fakta</summary>
-          <p id="room-brief"></p>
-          <div id="room-facts"></div>
-        </details>
-        <ul class="roster" id="roster" aria-label="Peserta diskusi"></ul>
-      </aside>
-
-      <div class="stage">
-        <ol class="log" id="log" role="log" aria-live="polite" aria-label="Transkrip diskusi"></ol>
-        <p class="error-line" id="error" role="alert" hidden>
-          <span id="error-text"></span>
-          <button id="retry" class="link-btn" type="button" hidden>Coba lagi</button>
-        </p>
-        <form class="composer" id="composer">
-          <label class="sr-only" for="draft">Ucapanmu</label>
-          <textarea id="draft" rows="3" maxlength="600" enterkeyhint="send"
-            placeholder="Ketik ucapanmu. Enter untuk kirim, Shift+Enter untuk baris baru."></textarea>
-          <div class="composer-actions">
-            <button type="button" id="mic" class="btn btn-ghost" hidden aria-pressed="false">Bicara</button>
-            <button type="button" id="finish" class="btn btn-ghost">Akhiri dan lihat rapor</button>
-            <button type="submit" id="send" class="btn btn-primary">Kirim</button>
+        <form class="lobby-join" id="lobby-form" novalidate>
+          <p class="lobby-kicker">Ruang tunggu</p>
+          <h2 id="lobby-heading">LGD</h2>
+          <div class="lobby-people" aria-hidden="true"><span>R</span><span>R</span><span>S</span><span>D</span><span>A</span></div>
+          <p class="lobby-who">Ratna (asesor) dan empat kandidat lain sudah di ruang tunggu.</p>
+          <label class="field" for="lobby-name">Nama yang tampil<input id="lobby-name" maxlength="40" autocomplete="given-name"></label>
+          <label class="field" id="lobby-code-field" for="lobby-code" hidden>Kode akses meeting<input id="lobby-code" autocomplete="off" spellcheck="false"></label>
+          <p class="lobby-error" id="lobby-error" role="alert" hidden></p>
+          <ul class="lobby-notes">
+            <li id="lobby-voice-note"></li>
+            <li id="lobby-mic-note"></li>
+            <li>Video kamera hanya tampil di layarmu. Tidak direkam dan tidak dikirim.</li>
+          </ul>
+          <div class="lobby-actions">
+            <button class="btn-join" id="lobby-join" type="submit">Gabung sekarang</button>
+            <button class="btn-quiet" id="lobby-back" type="button">Kembali ke email</button>
           </div>
         </form>
       </div>
-    </div>
-  </section>
 
-  <section id="screen-result" data-screen hidden>
-    <div class="result">
-      <h2 tabindex="-1">Rapor sesimu</h2>
-      <p class="note" id="result-note" hidden></p>
-      <div id="result-body"></div>
-      <div class="result-actions">
-        <button id="again" class="btn btn-primary" type="button">Latihan lagi</button>
-        <a class="btn btn-ghost" href="/">Kembali ke beranda</a>
+      <div class="room" id="room" hidden>
+        <div class="stage" id="stage" data-layout="grid">
+          <section class="share" id="share" aria-labelledby="share-title" hidden>
+            <p class="share-who">Ratna membagikan layar</p>
+            <article class="doc">
+              <p class="doc-kicker" id="share-industry"></p>
+              <h3 id="share-title"></h3>
+              <p id="share-brief"></p>
+              <div id="share-facts"></div>
+            </article>
+            <div class="share-foot">
+              <span>Waktu membaca <strong id="share-clock">01:00</strong></span>
+              <button class="btn-quiet" id="share-skip" type="button" hidden>Mulai diskusi sekarang</button>
+            </div>
+          </section>
+          <div class="grid" id="grid"></div>
+        </div>
+
+        <aside class="panel" id="panel" aria-labelledby="panel-title" hidden>
+          <header class="panel-head">
+            <h3 id="panel-title">Transkrip</h3>
+            <button class="panel-close" id="panel-close" type="button" aria-label="Tutup panel">×</button>
+          </header>
+          <div class="panel-body doc-dark" id="panel-case-body" hidden></div>
+          <div class="panel-body" id="panel-transcript-body" hidden>
+            <p class="transcript-empty" id="transcript-empty">Belum ada yang bicara.</p>
+            <ol class="transcript" id="transcript"></ol>
+          </div>
+        </aside>
+
+        <div class="captions" id="captions" aria-live="polite" hidden><b id="cap-name"></b><span id="cap-text"></span></div>
+        <p class="room-status" id="room-status" hidden><span id="room-status-text"></span><button class="link" id="room-retry" type="button" hidden>Coba lagi</button></p>
+
+        <form class="composer" id="composer" hidden>
+          <label class="sr-only" for="composer-input">Ucapanmu</label>
+          <input id="composer-input" maxlength="600" autocomplete="off" placeholder="Ketik ucapanmu, lalu tekan Enter">
+          <button type="submit">Kirim</button>
+        </form>
+
+        <nav class="controls" aria-label="Kontrol meeting">
+          <button class="ctl ctl-mic" id="ctl-mic" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-mic"/></svg><span class="ctl-label">Tahan untuk bicara</span></button>
+          <button class="ctl" id="ctl-type" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-keys"/></svg><span class="ctl-label">Ketik</span></button>
+          <button class="ctl" id="ctl-cam" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-cam"/></svg><span class="ctl-label">Kamera</span></button>
+          <button class="ctl" id="ctl-cc" type="button" aria-pressed="true"><svg aria-hidden="true"><use href="#i-cc"/></svg><span class="ctl-label">Teks</span></button>
+          <button class="ctl" id="ctl-case" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-doc"/></svg><span class="ctl-label">Kasus</span></button>
+          <button class="ctl" id="ctl-transcript" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-lines"/></svg><span class="ctl-label">Transkrip</span></button>
+          <button class="ctl ctl-leave" id="ctl-leave" type="button"><svg aria-hidden="true"><use href="#i-leave"/></svg><span class="ctl-label">Tinggalkan</span></button>
+        </nav>
       </div>
+
+      <div class="meet-ended" id="meet-ended" hidden>
+        <h2>Meeting berakhir</h2>
+        <p id="meet-ended-text"></p>
+      </div>
+    </section>
+  </main>
+
+  <div class="notifications" id="notifications"></div>
+</div>
+
+<div class="intro" id="intro">
+  <form class="intro-card" id="intro-form" aria-labelledby="intro-title">
+    <p class="intro-kicker">Simulasi seleksi dari Shortlisted</p>
+    <h1 id="intro-title">Anggap ini laptopmu.</h1>
+    <p class="intro-lead">Dua minggu lalu kamu melamar program Management Trainee. Sebentar lagi ada email masuk. Buka, lalu ikuti undangannya seperti seleksi sungguhan.</p>
+    <label class="field" for="intro-name">Namamu di email dan meeting<input id="intro-name" maxlength="40" autocomplete="given-name" placeholder="Nama panggilan"></label>
+    <button class="btn-start" type="submit">Mulai simulasi</button>
+    <p class="intro-fine">Pakai headphone kalau bisa, karena peserta AI akan berbicara. Perusahaan, email, dan peserta di sini fiktif, dan Shortlisted tidak menyimpan ketikan atau suaramu. <a href="/">Kembali ke beranda</a></p>
+  </form>
+</div>
+
+<dialog class="leave-dialog" id="leave-dialog" aria-labelledby="leave-title">
+  <form method="dialog">
+    <h2 id="leave-title">Tinggalkan meeting?</h2>
+    <p>Rapormu dibuat dari diskusi sejauh ini, lalu dikirim ke email.</p>
+    <div class="dialog-actions">
+      <button class="btn-quiet" value="stay" autofocus>Tetap di meeting</button>
+      <button class="btn-danger" value="leave">Tinggalkan</button>
     </div>
-  </section>
-</main>
+  </form>
+</dialog>
 
 <script type="module" src="app.js"></script>
 </body>
