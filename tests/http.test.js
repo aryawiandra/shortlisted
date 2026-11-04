@@ -135,7 +135,18 @@ test("rate limiting runs before any model work", async () => {
 test("status reports the mode and whether a code is needed, without leaking secrets", () => {
   const res = fakeRes();
   createStatusHandler({ env: { ANTHROPIC_API_KEY: "sk-secret", DEMO_ACCESS_CODE: "rahasia" } })({ method: "GET", headers: {} }, res);
-  assert.deepEqual(res.body, { mode: "live", accessCodeRequired: true });
+  assert.deepEqual(res.body, { mode: "live", accessCodeRequired: true, paymentsOpen: false });
   assert.ok(!JSON.stringify(res.body).includes("sk-secret"));
   assert.ok(!JSON.stringify(res.body).includes("rahasia"));
+});
+
+test("status says payments are open only with a key that matches the environment", () => {
+  const status = (env) => {
+    const res = fakeRes();
+    createStatusHandler({ env })({ method: "GET", headers: {} }, res);
+    return res.body;
+  };
+  assert.equal(status({ MIDTRANS_SERVER_KEY: "SB-Mid-server-x" }).paymentsOpen, true);
+  assert.equal(status({ MIDTRANS_SERVER_KEY: "SB-Mid-server-x", MIDTRANS_ENV: "production" }).paymentsOpen, false);
+  assert.ok(!JSON.stringify(status({ MIDTRANS_SERVER_KEY: "SB-Mid-server-x" })).includes("SB-Mid"));
 });

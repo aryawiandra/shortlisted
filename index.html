@@ -283,23 +283,34 @@
   </div>
 </footer>
 
-<script>
-  // Fill these before going live (Midtrans/Xendit payment links). Until then the buttons say so.
-  const CONFIG = {
-    paymentLinks: { siap: "", intensif: "" },
-  };
+<dialog class="checkout" id="checkout" aria-labelledby="checkout-title">
+  <form class="checkout-form" novalidate>
+    <h2 id="checkout-title">Ikut pre-sale</h2>
+    <p class="checkout-plan" id="checkout-plan"></p>
+    <label>Nama lengkap
+      <input name="name" autocomplete="name" required minlength="2" maxlength="80">
+    </label>
+    <label>Email
+      <input name="email" type="email" autocomplete="email" required maxlength="120">
+      <small>Bukti bayar dan tanggal peluncuran dikirim ke sini.</small>
+    </label>
+    <label>Nomor WhatsApp
+      <input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" required placeholder="0812 3456 7890">
+    </label>
+    <label class="consent">
+      <input type="checkbox" name="consent" required>
+      <span>Saya setuju dengan <a href="syarat.html" target="_blank">syarat pre-sale</a> dan <a href="privasi.html" target="_blank">kebijakan privasi</a>.</span>
+    </label>
+    <p class="checkout-error" id="checkout-error" role="alert" hidden></p>
+    <div class="checkout-actions">
+      <button type="button" class="btn btn-line" data-close>Batal</button>
+      <button type="submit" class="btn btn-dark">Lanjut ke pembayaran</button>
+    </div>
+    <p class="checkout-note">Pembayaran diproses oleh Midtrans. Kalau peluncuran batal, uangmu kembali penuh.</p>
+  </form>
+</dialog>
 
-  document.querySelectorAll("[data-plan]").forEach((button) => {
-    const link = CONFIG.paymentLinks[button.dataset.plan];
-    if (link) {
-      button.href = link;
-      return;
-    }
-    button.textContent = "Segera dibuka";
-    button.setAttribute("aria-disabled", "true");
-    button.addEventListener("click", (event) => event.preventDefault());
-  });
-</script>
 <script type="module" src="assets/landing.js"></script>
+<script type="module" src="assets/checkout.js"></script>
 </body>
 </html>

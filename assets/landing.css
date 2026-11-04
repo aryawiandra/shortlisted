@@ -309,7 +309,33 @@ footer a:hover { color: var(--paper); }
   .report-card { padding: 18px; }
   .tier-line { grid-template-columns: 1fr; gap: 2px; }
 }
+/* ---------- Checkout dialog ---------- */
+.checkout { width: min(460px, 100% - 32px); max-height: calc(100dvh - 32px); border: 0; border-radius: var(--radius-lg); padding: 0; background: var(--white); color: var(--ink); box-shadow: 0 40px 80px -30px rgba(28, 23, 8, .55); }
+.checkout[open] { animation: checkout-in .32s cubic-bezier(.32, .72, 0, 1); }
+.checkout::backdrop { background: rgba(20, 16, 10, .55); }
+@keyframes checkout-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+.checkout-form { display: grid; gap: 16px; padding: 28px; }
+.checkout h2 { font-size: 28px; }
+.checkout-plan { margin: -8px 0 4px; font-weight: 600; color: var(--ink-soft); }
+.checkout label { display: grid; gap: 6px; font-weight: 600; font-size: 15px; }
+.checkout input:not([type="checkbox"]) { font: 400 16px var(--body); color: var(--ink); padding: 12px 14px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); }
+.checkout input:not([type="checkbox"]):focus-visible { outline: 3px solid var(--amber-700); outline-offset: 1px; border-color: var(--amber-700); }
+.checkout small { font-weight: 400; color: var(--ink-soft); font-size: 13.5px; }
+.checkout .consent { grid-template-columns: 22px 1fr; align-items: start; font-weight: 400; color: var(--ink-soft); }
+.checkout .consent input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--night-800); }
+.checkout .consent a { color: var(--amber-700); }
+.checkout-error { margin: 0; color: #B23A0A; font-weight: 600; font-size: 15px; }
+.checkout-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.checkout-actions .btn { padding: 13px 22px; }
+.checkout-actions .btn:disabled { opacity: .7; cursor: progress; transform: none; }
+.checkout-note { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+@media (max-width: 480px) {
+  .checkout-form { padding: 22px 18px; }
+  .checkout-actions .btn { flex: 1 1 auto; justify-content: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .checkout[open] { animation: none; }
   .js .photo, .js .float-chip, .js .rapor-float { animation: none; opacity: 1; transform: none; }
   .js [data-reveal] { opacity: 1; transform: none; transition: none; }
   .js .feedback { animation: none; }

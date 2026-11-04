@@ -62,6 +62,15 @@ Other free options checked (Indonesian support, license):
 | rany2/edge-tts (Python) / msedge-tts (Node) | Yes (Ardi, Gadis, plus multilingual voices) | In use. Unofficial Microsoft endpoint; Azure Speech F0 is the official equivalent. |
 | Gemini TTS (Google) | Yes | Very natural, has a free tier, but needs an API key and free-tier input may be used by Google. Not tested here. |
 
+## Payments (pre-sale, Midtrans Snap)
+
+The plan buttons open a short form (name, email, WhatsApp, consent). `POST /api/checkout` validates it, sets the price on the server (`lib/payments.js`, never from the request), and creates a Snap transaction; the buyer pays on Midtrans' hosted page (QRIS, e-wallets, bank transfer, whatever is enabled in the dashboard) and comes back to `terima-kasih.html`. That page asks `GET /api/order?id=` for the status, which asks Midtrans directly, so a forged `?transaction_status=settlement` in the URL changes nothing.
+
+- **Ledger:** the Midtrans dashboard. Nothing is stored here, and there is no webhook yet: add one (with signature check plus a status re-query) when accounts get activated automatically.
+- **Env:** `MIDTRANS_SERVER_KEY`, `MIDTRANS_ENV` (`production` for real money, otherwise sandbox), `SITE_URL`. Without a key the buttons say "Segera dibuka" and `/api/checkout` returns 503. A sandbox key with `MIDTRANS_ENV=production` (or the reverse) is refused.
+- **Dashboard:** also set the Finish redirect URL to `<SITE_URL>/terima-kasih.html` (Settings > Snap Preferences), and turn on the buyer email receipt.
+- **Limits:** 10 checkouts and 60 status checks per IP per 10 minutes.
+
 ## Privacy
 
 Nothing is stored. Typed text goes to the demo server only to produce replies. Voice input uses the browser's own speech recognition, so audio never reaches this server. The camera, if turned on in the lobby, only shows on the applicant's own screen.

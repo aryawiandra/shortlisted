@@ -31,6 +31,8 @@ const handlers = {
   score: (await import("./api/score.js")).default,
   status: (await import("./api/status.js")).default,
   tts: (await import("./api/tts.js")).default,
+  checkout: (await import("./api/checkout.js")).default,
+  order: (await import("./api/order.js")).default,
 };
 
 function readBody(req) {
