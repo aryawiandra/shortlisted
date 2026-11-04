@@ -83,6 +83,29 @@ test("gives up after the retry and surfaces the error", async () => {
   await assert.rejects(synth({ ...LINE, text: "Gagal." }), /socket hang up/);
 });
 
+test("lines for the same voice are synthesized one at a time on its connection", async () => {
+  let active = 0;
+  let peak = 0;
+  class SlowEngine {
+    async setMetadata() {}
+    toStream() {
+      active += 1;
+      peak = Math.max(peak, active);
+      const audioStream = new PassThrough();
+      setTimeout(() => {
+        active -= 1;
+        audioStream.end(Buffer.alloc(300, 1));
+      }, 5);
+      audioStream.on("end", () => audioStream.emit("close"));
+      return { audioStream };
+    }
+    close() {}
+  }
+  const synth = createSynthesizer({ Engine: SlowEngine, now: () => 0 });
+  await Promise.all(["A", "B", "C"].map((text) => synth({ ...LINE, text })));
+  assert.equal(peak, 1);
+});
+
 test("text is escaped and '&' is spoken as 'dan'", async () => {
   const { Engine, made } = fakeEngine();
   const synth = createSynthesizer({ Engine, now: () => 0 });
