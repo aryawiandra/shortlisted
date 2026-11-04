@@ -139,10 +139,10 @@ function mountPersonaTips() {
   });
 }
 
-// ---------- Sample radars (hero phone + report card) ----------
+// ---------- Sample radars (hero laptop + report card) ----------
 function mountSampleRadars() {
-  const phone = document.getElementById("phone-radar");
-  if (phone) phone.replaceChildren(radarChart(withLabels(SAMPLE), { title: "Contoh rapor" }).node);
+  const hero = document.getElementById("hero-radar");
+  if (hero) hero.replaceChildren(radarChart(withLabels(SAMPLE), { title: "Contoh rapor" }).node);
   const report = document.getElementById("report-radar");
   if (report) report.replaceChildren(radarChart(withLabels(SAMPLE), { title: "Contoh rapor sesi LGD" }).node);
   const tiers = document.getElementById("report-tiers");
