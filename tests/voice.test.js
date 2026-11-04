@@ -106,6 +106,30 @@ test("a voice request that hangs is abandoned and the line goes on", async () =>
   assert.equal(started, true);
 });
 
+test("voice requests run two at a time, and the line needed now jumps the queue", async () => {
+  const started = [];
+  const pending = [];
+  const deferredFetch = (url) =>
+    new Promise((resolve) => {
+      started.push(new URLSearchParams(url.split("?")[1]).get("t"));
+      pending.push(() => resolve(new Response(new Uint8Array([0xff, 0xf3, 1]), { status: 200 })));
+    });
+  const voice = createVoiceEngine({ fetchImpl: deferredFetch, AudioCtor: fakeAudioClass(), sleep: noSleep });
+  for (const line of ["L1", "L2", "L3", "L4"]) voice.prefetch("ratna", line);
+  assert.deepEqual(started, ["L1", "L2"]);
+  const now = voice.speak("raka", "NOW");
+  await Promise.resolve();
+  pending.shift()();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(started[2], "NOW");
+  while (pending.length) {
+    pending.shift()();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  }
+  assert.equal(await now, true);
+  assert.deepEqual(started.slice().sort(), ["L1", "L2", "L3", "L4", "NOW"]);
+});
+
 test("with voices off, nothing is fetched and lines still keep their timing", async () => {
   const fetch = fakeFetch();
   const voice = createVoiceEngine({ fetchImpl: fetch.impl, AudioCtor: fakeAudioClass(), sleep: noSleep });

@@ -124,7 +124,7 @@ export function createMeet({ api, voice, camera, sounds, access, onMode }) {
           ? "Suara peserta sedang tidak tersedia. Teks tetap tampil, jadi kamu tetap bisa ikut."
           : "Menyiapkan suara peserta…";
     $("lobby-voice-note").textContent = note;
-    if (status === "unavailable" && session) notice("Suara peserta sedang tidak tersedia. Teks tetap tampil.");
+    if (status === "unavailable" && session && voice.isEnabled()) notice("Suara peserta sedang tidak tersedia. Teks tetap tampil.");
   }
 
   async function toggleCamera() {

@@ -7,8 +7,9 @@ const MS_PER_WORD = 400;
 const MIN_SPEECH_MS = 1200;
 const MAX_SPEECH_MS = 12_000;
 const VOLUME = Object.freeze({ dimas: 0.85 }); // the quiet one is a little softer
-const FETCH_TIMEOUT_MS = 8000;
+const FETCH_TIMEOUT_MS = 15_000;
 const MAX_FAILURES = 2; // then the rest of this meeting runs on captions
+const MAX_PARALLEL = 2; // more at once only slows each line down on a weak connection
 
 export function estimateSpeechMs(text, rate = 1) {
   const words = String(text ?? "").split(/\s+/).filter(Boolean).length;
@@ -57,6 +58,8 @@ export function createVoiceEngine({
   let current = null;
   let status = null;
   let failures = 0;
+  const queue = []; // { key, run } waiting for a free slot
+  let active = 0;
 
   const report = (next) => {
     if (next === status) return;
@@ -64,29 +67,54 @@ export function createVoiceEngine({
     onStatus(next);
   };
 
-  function load(speaker, text) {
+  // One request; the timeout starts when it actually leaves, not while it waits in line.
+  function request(key, speaker, text) {
+    if (failures >= MAX_FAILURES) return Promise.resolve(null);
+    const abort = new AbortController();
+    const timer = setTimeout(() => abort.abort(), fetchTimeoutMs);
+    return fetchImpl(ttsUrl(speaker, text, endpoint), { headers: { "x-demo-code": getAccessCode() }, signal: abort.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`voice server answered ${response.status}`);
+        const url = URL.createObjectURL(await response.blob());
+        failures = 0;
+        report("ready");
+        return url;
+      })
+      .catch((error) => {
+        console.warn("Voice unavailable:", error.message);
+        failures += 1;
+        report("unavailable");
+        cache.delete(key); // a later line may succeed again, until the breaker trips
+        return null;
+      })
+      .finally(() => clearTimeout(timer));
+  }
+
+  function pump() {
+    while (active < MAX_PARALLEL && queue.length) {
+      const job = queue.shift();
+      active += 1;
+      job.run().finally(() => {
+        active -= 1;
+        pump();
+      });
+    }
+  }
+
+  function load(speaker, text, { urgent = false } = {}) {
     if (failures >= MAX_FAILURES) return Promise.resolve(null);
     const key = `${speaker}\n${text}`;
     if (!cache.has(key)) {
-      const abort = new AbortController();
-      const timer = setTimeout(() => abort.abort(), fetchTimeoutMs);
-      const pending = fetchImpl(ttsUrl(speaker, text, endpoint), { headers: { "x-demo-code": getAccessCode() }, signal: abort.signal })
-        .then(async (response) => {
-          if (!response.ok) throw new Error(`voice server answered ${response.status}`);
-          const url = URL.createObjectURL(await response.blob());
-          failures = 0;
-          report("ready");
-          return url;
-        })
-        .catch((error) => {
-          console.warn("Voice unavailable:", error.message);
-          failures += 1;
-          report("unavailable");
-          cache.delete(key); // a later line may succeed again, until the breaker trips
-          return null;
-        })
-        .finally(() => clearTimeout(timer));
+      const pending = new Promise((resolve) => {
+        const job = { key, run: () => request(key, speaker, text).then(resolve) };
+        if (urgent) queue.unshift(job);
+        else queue.push(job);
+      });
       cache.set(key, pending);
+      pump();
+    } else if (urgent) {
+      const waiting = queue.findIndex((job) => job.key === key);
+      if (waiting > 0) queue.unshift(...queue.splice(waiting, 1));
     }
     return cache.get(key);
   }
@@ -99,7 +127,7 @@ export function createVoiceEngine({
     current?.stop();
     const token = { cancelled: false, stop: () => {} };
     current = token;
-    const url = enabled ? await load(speaker, text) : null;
+    const url = enabled ? await load(speaker, text, { urgent: true }) : null;
     if (token.cancelled) return false;
     if (!url) {
       onStart();
@@ -155,6 +183,7 @@ export function createVoiceEngine({
       const urls = await Promise.all(cache.values());
       urls.filter(Boolean).forEach((url) => URL.revokeObjectURL(url));
       cache.clear();
+      queue.length = 0;
       failures = 0;
     },
   });
