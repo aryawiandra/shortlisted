@@ -1,0 +1,11 @@
+/* Radar chart styles, shared by the demo scorecard and the landing page. */
+.radar { width: 100%; height: auto; display: block; overflow: visible; }
+.radar-ring { fill: none; stroke: #E8DDB5; stroke-width: 1; }
+.radar-ring-mid { stroke: #5A4F2E; stroke-dasharray: 4 4; }
+.radar-axis { stroke: #E8DDB5; stroke-width: 1; }
+.radar-shape { fill: rgba(245, 184, 0, 0.32); stroke: #8A5A00; stroke-width: 2; stroke-linejoin: round; }
+.radar-dot circle:not(.radar-hit) { fill: #8A5A00; stroke: #FFFFFF; stroke-width: 2; }
+.radar-hit { fill: transparent; cursor: help; }
+.radar-dot:hover circle:not(.radar-hit) { r: 7; }
+.radar-label { font: 600 12.5px "Instrument Sans", system-ui, sans-serif; fill: #5A4F2E; }
+.radar-score { font: 800 15px "Bricolage Grotesque", Georgia, serif; fill: #1C1708; }

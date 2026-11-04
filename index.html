@@ -5,239 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shortlisted: Latihan FGD, LGD, dan Interview dengan AI</title>
 <meta name="description" content="Latihan FGD, LGD, dan interview bareng empat peserta AI dan satu assessor. Untuk pelamar MT, BUMN, dan graduate program dari kampus mana pun.">
+<meta name="theme-color" content="#FFD43B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%279%27 fill=%27%231C1708%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276.5%27 fill=%27%23FFD43B%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --night-900: #14100A;
-    --night-800: #1C1708;
-    --night-700: #2B2210;
-    --amber-700: #8A5A00;
-    --amber-500: #E0A800;
-    --sun-300: #FFE680;
-    --sun-400: #FFD43B;
-    --sun-500: #F5B800;
-    --paper: #FFFBEB;
-    --paper-dim: #F5EBC8;
-    --ink: #1C1708;
-    --ink-soft: #5A4F2E;
-    --line: #E8DDB5;
-    --alert: #D9480F;
-    --white: #FFFFFF;
-    --radius-sm: 10px;
-    --radius-md: 18px;
-    --radius-phone: 44px;
-    --display: "Bricolage Grotesque", Georgia, serif;
-    --body: "Instrument Sans", system-ui, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
-  a { color: inherit; }
-  img { max-width: 100%; }
-  .wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
-  h1, h2, h3 { font-family: var(--display); line-height: 1.02; margin: 0; letter-spacing: -0.02em; }
-
-  /* ---------- Nav ---------- */
-  .nav { position: absolute; inset: 0 0 auto; z-index: 5; }
-  .nav .wrap { display: flex; align-items: center; justify-content: space-between; padding-block: 22px; }
-  .logo { font-family: var(--display); font-weight: 800; font-size: 24px; color: var(--ink); text-decoration: none; letter-spacing: -0.03em; }
-  .nav a.small { color: var(--ink); font-weight: 600; text-decoration: none; font-size: 15px; }
-  .nav a.small:hover { text-decoration: underline; text-underline-offset: 4px; }
-
-  /* ---------- Hero ---------- */
-  .hero { position: relative; overflow: hidden; color: var(--ink);
-    background: radial-gradient(120% 90% at 85% 10%, var(--sun-300) 0%, var(--sun-400) 45%, var(--sun-500) 100%); }
-  .hero .wrap { display: grid; grid-template-columns: 1fr 1.15fr; gap: 32px; align-items: center; padding-top: 120px; padding-bottom: 72px; min-height: 760px; }
-  .hero h1 { font-size: clamp(46px, 6.2vw, 84px); font-weight: 800; }
-  .hero .lead { font-size: 19px; max-width: 32ch; color: #3D3210; margin: 22px 0 32px; }
-  .btn { display: inline-flex; align-items: center; gap: 10px; font: 600 16px var(--body); border: 0; cursor: pointer; text-decoration: none; padding: 15px 26px; border-radius: 999px; transition: transform .15s ease, background .15s ease; }
-  .btn:focus-visible { outline: 3px solid var(--night-800); outline-offset: 3px; }
-  .btn-primary { background: var(--night-800); color: var(--sun-400); }
-  .btn-primary:hover { transform: translateY(-1px); }
-  .btn-ghost { background: transparent; color: var(--ink); padding-inline: 6px; text-decoration: underline; text-underline-offset: 4px; }
-  .hero .actions { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
-  .hero .note { font-size: 14px; color: #4A3E12; margin-top: 18px; }
-
-  /* ---------- Phones ---------- */
-  .stage { position: relative; height: 640px; }
-  .phone { position: absolute; width: 236px; height: 500px; border-radius: var(--radius-phone); background: var(--night-900); padding: 10px;
-    box-shadow: 0 40px 80px -30px rgba(60,40,0,.55); opacity: 0; transform: translateY(40px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
-  .phone .screen { position: relative; width: 100%; height: 100%; border-radius: 35px; overflow: hidden; background: var(--white); color: var(--ink); font-size: 11.5px; }
-  .phone .screen::before { content: ""; position: absolute; top: 9px; left: 50%; translate: -50% 0; width: 86px; height: 24px; border-radius: 20px; background: var(--night-900); z-index: 3; }
-  .status { display: flex; justify-content: space-between; padding: 12px 22px 0; font-weight: 600; font-size: 11px; height: 36px; }
-  .p1 { left: 0; top: 90px; animation-delay: .05s; }
-  .p2 { left: calc(50% - 118px); top: 30px; z-index: 2; animation-delay: .2s; }
-  .p3 { right: 0; top: 110px; animation-delay: .35s; }
-  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-
-  /* Screen 1: splash */
-  .phone .s-splash { background: radial-gradient(90% 70% at 70% 30%, #C98F00, var(--night-700) 70%); color: var(--paper); }
-  .s-splash .inner { padding: 22px 20px; display: flex; flex-direction: column; height: calc(100% - 36px); }
-  .s-splash h3 { font-size: 30px; font-weight: 800; }
-  .s-splash p { font-size: 11.5px; color: #F5E7B8; margin: auto 0 14px; }
-  .s-splash .cta { background: var(--sun-400); color: var(--night-800); text-align: center; border-radius: 999px; padding: 11px; font-weight: 600; }
-
-  /* The one glass object: a cluster of speech bubbles = the group discussion */
-  .glass { position: relative; width: 170px; height: 170px; margin: 26px auto 0; }
-  .bubble { position: absolute; border-radius: 26px;
-    background: linear-gradient(145deg, rgba(255,245,180,.8), rgba(255,200,60,.4) 55%, rgba(170,110,0,.3));
-    border: 1px solid rgba(255,245,200,.6); box-shadow: inset 0 1px 12px rgba(255,255,255,.45), 0 18px 30px -12px rgba(0,0,0,.4); }
-  .bubble::after { content: ""; position: absolute; bottom: -12px; width: 22px; height: 22px; background: inherit; border-right: 1px solid rgba(255,245,200,.45); border-bottom: 1px solid rgba(255,245,200,.45); transform: rotate(45deg); border-radius: 0 0 6px 0; }
-  .b1 { width: 112px; height: 78px; left: 0; top: 18px; }
-  .b1::after { left: 22px; }
-  .b2 { width: 104px; height: 74px; right: 0; top: 62px; background: linear-gradient(145deg, rgba(255,250,210,.9), rgba(255,215,80,.5) 55%, rgba(190,130,0,.35)); }
-  .b2::after { right: 24px; }
-  .b3 { width: 70px; height: 50px; left: 34px; top: 112px; opacity: .85; }
-  .b3::after { left: 18px; }
-
-  /* Screen 2: FGD room */
-  .phone .s-room { padding: 0; background: #FBF8EC; font-size: 10.5px; line-height: 1.4; }
-  .room-head { padding: 6px 16px 10px; display: flex; justify-content: space-between; align-items: baseline; }
-  .room-head b { font-family: var(--display); font-size: 16px; }
-  .timer { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--amber-700); }
-  .case { margin: 0 12px; background: var(--night-700); color: var(--paper); border-radius: 14px; padding: 12px; }
-  .case small { display: block; color: var(--sun-400); font-size: 10px; margin-bottom: 4px; }
-  .people { display: flex; gap: 6px; padding: 12px 12px 4px; }
-  .person { flex: 1; text-align: center; font-size: 9.5px; color: var(--ink-soft); }
-  .avatar { width: 34px; height: 34px; border-radius: 50%; margin: 0 auto 4px; display: grid; place-items: center; font-weight: 700; font-size: 12px; color: var(--night-800); background: var(--paper-dim); }
-  .person.speaking .avatar { background: var(--sun-400); box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--amber-700); }
-  .person.you .avatar { background: var(--night-800); color: var(--sun-400); }
-  .chat { padding: 6px 12px; display: grid; gap: 5px; }
-  .msg { background: var(--white); border: 1px solid #F0E8CC; border-radius: 12px; padding: 6px 10px; }
-  .msg b { font-size: 10px; color: var(--amber-700); display: block; }
-  .msg.you { background: #FFF3C4; border-color: #F2DE95; }
-  .mic { position: absolute; left: 12px; right: 12px; bottom: 14px; display: flex; gap: 8px; align-items: center; }
-  .mic .hold { flex: 1; background: var(--night-800); color: var(--sun-400); border-radius: 999px; text-align: center; padding: 11px; font-weight: 600; }
-
-  /* Screen 3: report */
-  .s-report { background: var(--white); }
-  .rep { padding: 4px 16px; }
-  .rep h4 { font-family: var(--display); font-size: 18px; margin: 4px 0 2px; }
-  .rep .sub { color: var(--ink-soft); font-size: 10.5px; margin-bottom: 12px; }
-  .score { display: grid; grid-template-columns: 92px 1fr 22px; gap: 8px; align-items: center; margin-bottom: 7px; }
-  .bar { height: 7px; border-radius: 4px; background: #F3ECD3; overflow: hidden; }
-  .bar i { display: block; height: 100%; background: var(--amber-500); border-radius: 4px; }
-  .score.low .bar i { background: var(--alert); }
-  .evidence { margin-top: 12px; background: #FBF8EC; border-radius: 12px; padding: 10px; font-size: 10.5px; }
-  .evidence q { display: block; font-style: italic; margin: 4px 0; }
-  .next { margin-top: 10px; font-size: 10.5px; }
-  .next li { margin-bottom: 4px; }
-  .demo-tag { position: absolute; bottom: -30px; left: 0; right: 0; text-align: center; font-size: 12px; color: #5A4710; }
-
-  /* ---------- Sections ---------- */
-  section { padding-block: 96px; }
-  .eyebrow-plain { font-size: 15px; font-weight: 600; color: var(--amber-700); margin-bottom: 14px; }
-
-  .problem .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: end; }
-  .problem h2 { font-size: clamp(36px, 4.6vw, 60px); font-weight: 700; }
-  .problem h2 em { font-style: normal; background: linear-gradient(transparent 62%, var(--sun-400) 62%); }
-  .problem p { color: var(--ink-soft); font-size: 18px; margin: 0 0 14px; }
-
-  .session { background: var(--white); border-block: 1px solid var(--line); }
-  .session h2 { font-size: clamp(30px, 3.6vw, 44px); max-width: 18ch; }
-  .timeline { margin-top: 44px; display: grid; grid-template-columns: 5fr 12fr 5fr; gap: 0; }
-  .seg { padding: 20px 22px 24px; border-top: 6px solid var(--night-800); }
-  .seg + .seg { border-left: 1px solid var(--line); }
-  .seg.mid { border-top-color: var(--amber-500); }
-  .seg.end { border-top-color: var(--sun-400); }
-  .seg .min { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 14px; color: var(--ink-soft); }
-  .seg h3 { font-size: 22px; margin: 8px 0 8px; }
-  .seg p { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
-  .personas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .personas span { font-size: 13.5px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 5px 10px; }
-
-  .report .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-  .report h2 { font-size: clamp(30px, 3.6vw, 44px); }
-  .report .lede { color: var(--ink-soft); margin: 16px 0 0; font-size: 18px; }
-  .aspects { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
-  .aspects li { display: grid; grid-template-columns: 170px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line); }
-  .aspects b { font-family: var(--display); font-size: 19px; font-weight: 700; }
-  .aspects span { color: var(--ink-soft); font-size: 15.5px; }
-
-  .versus { background: var(--night-800); color: var(--paper); }
-  .versus .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
-  .versus h2 { font-size: clamp(30px, 3.6vw, 44px); color: var(--sun-400); }
-  .versus p { color: #E8DEB8; font-size: 18px; }
-  .versus dl { margin: 0; }
-  .versus dt { font-family: var(--display); font-size: 20px; font-weight: 700; margin-top: 20px; }
-  .versus dd { margin: 4px 0 0; color: #E8DEB8; }
-
-  .pricing h2 { font-size: clamp(30px, 3.6vw, 44px); }
-  .presale { max-width: 62ch; color: var(--ink-soft); margin-top: 14px; }
-  .plans { display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; margin-top: 40px; }
-  .plan { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 28px; background: var(--white); display: flex; flex-direction: column; }
-  .plan.main { background: var(--sun-400); color: var(--ink); border-color: var(--sun-500); }
-  .plan h3 { font-size: 24px; }
-  .price { font-family: var(--display); font-size: 48px; font-weight: 800; margin: 14px 0 2px; letter-spacing: -0.03em; }
-  .price small { font: 500 16px var(--body); opacity: .75; }
-  .plan ul { padding-left: 18px; margin: 18px 0 24px; }
-  .plan li { margin-bottom: 6px; }
-  .plan .btn { margin-top: auto; align-self: flex-start; }
-  .plan:not(.main) .btn-primary { background: var(--night-800); color: var(--sun-400); }
-  .btn[aria-disabled="true"] { opacity: .6; cursor: not-allowed; transform: none; }
-  .free-line { margin-top: 22px; color: var(--ink-soft); }
-
-  .relate { background: var(--paper-dim); }
-  .relate h2 { font-size: clamp(30px, 3.6vw, 44px); max-width: 20ch; }
-  .relate ul { list-style: none; padding: 0; margin: 36px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .relate li { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 24px; font-size: 17px; }
-  .relate li::before { content: ""; display: block; width: 36px; height: 6px; border-radius: 3px; background: var(--sun-400); margin-bottom: 16px; }
-  .relate .close { margin: 32px 0 0; font-family: var(--display); font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; letter-spacing: -0.01em; max-width: 30ch; }
-
-  .faq h2 { font-size: clamp(30px, 3.6vw, 44px); margin-bottom: 28px; }
-  details { border-bottom: 1px solid var(--line); padding: 18px 0; }
-  details summary { cursor: pointer; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
-  details summary::after { content: "+"; font-family: var(--display); font-size: 22px; line-height: 1; }
-  details[open] summary::after { content: "−"; }
-  details p { color: var(--ink-soft); margin: 10px 0 0; max-width: 70ch; }
-
-  footer { padding: 40px 0 56px; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-soft); }
-  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; }
-  footer nav { display: flex; gap: 22px; }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 980px) {
-    .hero .wrap { grid-template-columns: 1fr; min-height: 0; padding-top: 104px; }
-    .stage { height: 600px; }
-    .problem .wrap, .report .wrap, .versus .wrap { grid-template-columns: 1fr; gap: 28px; }
-    .plans, .relate ul { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 640px) {
-    body { font-size: 16px; }
-    section { padding-block: 64px; }
-    .stage { height: 540px; }
-    .p1, .p3 { display: none; }
-    .p2 { top: 0; }
-    .timeline { grid-template-columns: 1fr; }
-    .seg + .seg { border-left: 0; }
-    .aspects li { grid-template-columns: 1fr; gap: 4px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .phone { animation: none; opacity: 1; transform: none; }
-    html { scroll-behavior: auto; }
-  }
-</style>
+<link rel="stylesheet" href="assets/landing.css">
+<link rel="stylesheet" href="demo/radar.css">
+<script>
+  // Enable motion styles only when JS runs. If the module never starts, show everything.
+  document.documentElement.classList.add("js");
+  setTimeout(() => { if (!window.__landingReady) document.documentElement.classList.remove("js"); }, 2500);
+</script>
 </head>
 <body>
 
 <header class="nav">
-  <div class="wrap">
-    <a class="logo" href="#top">shortlisted</a>
-    <a class="small" href="#harga">Harga pre-sale</a>
+  <div class="wrap nav-pill">
+    <a class="logo" href="#top"><span class="logo-mark" aria-hidden="true"></span>shortlisted</a>
+    <nav class="nav-links" aria-label="Bagian halaman">
+      <a href="#coba">Coba 1 menit</a>
+      <a href="#peserta">Peserta AI</a>
+      <a href="#rapor">Rapor</a>
+      <a href="#harga">Harga</a>
+    </nav>
+    <a class="btn btn-dark" href="demo/">Main demo <span class="arrow" aria-hidden="true">→</span></a>
   </div>
 </header>
 
 <main id="top">
   <section class="hero" style="padding:0">
-    <div class="wrap">
+    <div class="wrap hero-grid">
       <div>
-        <h1>Gugup boleh.<br>Kaget jangan.</h1>
+        <a class="badge" href="demo/"><b>Baru</b> Demo LGD sudah bisa dimainkan</a>
+        <h1>Gugup boleh.<br><span class="soft">Kaget jangan.</span></h1>
         <p class="lead">Latihan FGD, LGD, dan interview bareng empat peserta AI dan satu assessor. Jadi saat hari H tiba, rasanya seperti latihan ke-10, bukan yang pertama.</p>
         <div class="actions">
-          <a class="btn btn-primary" href="#harga">Kunci harga pre-sale Rp49.000</a>
-          <a class="btn btn-ghost" href="#sesi">Intip satu sesi</a>
+          <a class="btn btn-dark" href="#coba">Coba satu menit <span class="arrow" aria-hidden="true">↓</span></a>
+          <a class="btn btn-line" href="#harga">Kunci harga Rp49.000</a>
         </div>
         <p class="note">Untuk pelamar MT, BUMN, bank, dan graduate program dari kampus mana pun.</p>
       </div>
@@ -258,7 +63,7 @@
         <div class="phone p2" aria-hidden="true">
           <div class="screen s-room">
             <div class="status"><span>9:41</span><span>5G</span></div>
-            <div class="room-head"><b>Sesi LGD</b><span class="timer">12:40</span></div>
+            <div class="room-head"><b>Sesi LGD</b><span class="timer">04:12</span></div>
             <div class="case"><small>Studi kasus</small>Distribusi BBM ke 3 kabupaten terpencil terlambat 9 hari. Anggaran dipotong 15%.</div>
             <div class="people">
               <div class="person speaking"><div class="avatar">R</div>Raka</div>
@@ -281,83 +86,178 @@
             <div class="status"><span>9:41</span><span>5G</span></div>
             <div class="rep">
               <h4>Rapor sesi #4</h4>
-              <div class="sub">LGD · 20 menit · kasus distribusi</div>
-              <div class="score"><span>Inisiatif</span><span class="bar"><i style="width:80%"></i></span><b>4</b></div>
-              <div class="score"><span>Analisis</span><span class="bar"><i style="width:60%"></i></span><b>3</b></div>
-              <div class="score"><span>Komunikasi</span><span class="bar"><i style="width:80%"></i></span><b>4</b></div>
-              <div class="score"><span>Kerja tim</span><span class="bar"><i style="width:100%"></i></span><b>5</b></div>
-              <div class="score low"><span>Kepemimpinan</span><span class="bar"><i style="width:40%"></i></span><b>2</b></div>
-              <div class="score"><span>Keputusan</span><span class="bar"><i style="width:60%"></i></span><b>3</b></div>
-              <div class="evidence"><b>Bukti</b><q>"Boleh saya rangkum dua opsi tadi dulu?"</q>Bagus untuk kerja tim, tapi kamu tidak mengusulkan keputusan di 5 menit terakhir.</div>
-              <ol class="next"><li>Usulkan kesimpulan sebelum menit ke-17.</li><li>Pakai angka dari kasus saat menyanggah.</li></ol>
+              <div class="sub">LGD · 6 menit · kasus distribusi</div>
+              <div class="phone-radar" id="phone-radar"></div>
+              <div class="mini-tiers">
+                <div class="k"><i>✓</i>Kuat: Kerja tim, Inisiatif</div>
+                <div class="l"><i>!</i>Latih: Kepemimpinan</div>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="float-chip chip-a" aria-hidden="true"><span class="dot">!</span><span><b>Raka memotong</b>Tanggapi, atau biarkan?</span></div>
+        <div class="float-chip chip-b" aria-hidden="true"><span class="dot">✓</span><span><b>+1 Analisis</b>Kamu memakai angka stok</span></div>
         <div class="demo-tag">Contoh tampilan. Produk sedang dibangun.</div>
       </div>
     </div>
   </section>
 
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>FGD</span><span>LGD</span><span>Interview HR</span><span>Interview user</span><span>Studi kasus</span><span>MT bank</span><span>BUMN</span><span>FMCG</span><span>Tambang</span><span>Konsultan</span>
+      <span>FGD</span><span>LGD</span><span>Interview HR</span><span>Interview user</span><span>Studi kasus</span><span>MT bank</span><span>BUMN</span><span>FMCG</span><span>Tambang</span><span>Konsultan</span>
+    </div>
+  </div>
+
   <section class="problem">
     <div class="wrap">
-      <h2>FGD butuh lima orang dan satu assessor. <em>Kamu cukup satu HP.</em></h2>
-      <div>
-        <p>Tes tulis bisa dilatih sendiri. Interview bisa dilatih di depan cermin. FGD dan LGD tidak bisa: kamu butuh kelompok, dan orang yang tahu cara menilainya.</p>
-        <p>Mahasiswa di beberapa kampus punya senior dan alumni untuk mock session. Kebanyakan pelamar tidak punya. Shortlisted dibuat untuk mereka.</p>
+      <div class="problem-grid" data-reveal>
+        <h2>FGD butuh lima orang dan satu assessor. <em>Kamu cukup satu HP.</em></h2>
+        <div>
+          <p>Tes tulis bisa dilatih sendiri. Interview bisa dilatih di depan cermin. FGD dan LGD tidak bisa: kamu butuh kelompok, dan orang yang tahu cara menilainya.</p>
+          <p>Mahasiswa di beberapa kampus punya senior dan alumni untuk mock session. Kebanyakan pelamar tidak punya. Shortlisted dibuat untuk mereka.</p>
+        </div>
+      </div>
+      <div class="stats" data-reveal>
+        <div class="stat"><strong>4</strong><span>peserta AI dengan watak berbeda, dan tidak ada yang menunggumu siap</span></div>
+        <div class="stat"><strong>6</strong><span>aspek yang biasa dinilai assessor, masing-masing dengan kutipan ucapanmu</span></div>
+        <div class="stat hl"><strong>0</strong><span>teman yang perlu kamu repotkan untuk latihan jam 11 malam</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sim on-dark" id="coba" aria-labelledby="sim-title">
+    <div class="wrap">
+      <div class="sim-head" data-reveal>
+        <div class="eyebrow">Coba satu menit</div>
+        <h2 class="h-section" id="sim-title">Kamu di ruang LGD. Tiga momen. Apa yang kamu ucapkan?</h2>
+        <p>Pilih jawabanmu dan lihat rapornya berubah. Ini versi singkat dengan pilihan ganda. Di sesi sungguhan, kamu bicara bebas.</p>
+      </div>
+      <div class="sim-grid">
+        <div class="sim-card" id="sim-card" aria-live="polite">
+          <noscript><p>Simulasi ini butuh JavaScript. Kamu tetap bisa <a href="demo/">membuka demo LGD</a>.</p></noscript>
+        </div>
+        <aside class="sim-board" aria-label="Rapor sementara">
+          <div class="sim-board-head"><h3>Rapor sementara</h3><span class="live">Berubah sesuai pilihanmu</span></div>
+          <div class="sim-radar" id="sim-radar"></div>
+          <div class="tier-row" id="sim-tiers"></div>
+          <p class="sim-disclaimer">Ilustrasi. Di sesi penuh, nilai diberikan dari ucapanmu sendiri, bukan dari pilihan yang sudah disiapkan.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="personas" id="peserta">
+    <div class="wrap">
+      <div data-reveal>
+        <div class="eyebrow">Peserta AI</div>
+        <h2 class="h-section">Empat orang yang pernah kamu temui di ruang seleksi.</h2>
+      </div>
+      <div class="bento">
+        <article class="persona-card c-raka" data-reveal>
+          <div class="persona-top"><span class="avatar" aria-hidden="true">R</span><div><h3>Raka</h3><div class="trait">Suka memotong</div></div></div>
+          <blockquote>"Sudahlah, sewa truk saja. Kita tidak punya waktu."</blockquote>
+          <button class="tip-toggle" type="button" aria-expanded="false" aria-controls="tip-raka">Cara menghadapinya</button>
+          <p class="tip" id="tip-raka" hidden>Akui poinnya dalam satu kalimat, lalu kembalikan ke alur: "Bisa jadi, Raka. Kita cek dulu angkanya, satu menit saja."</p>
+        </article>
+        <article class="persona-card c-sinta" data-reveal>
+          <div class="persona-top"><span class="avatar" aria-hidden="true">S</span><div><h3>Sinta</h3><div class="trait">Selalu minta data</div></div></div>
+          <blockquote>"Itu klaim. Angka mana di kasus yang mendukungnya?"</blockquote>
+          <button class="tip-toggle" type="button" aria-expanded="false" aria-controls="tip-sinta">Cara menghadapinya</button>
+          <p class="tip" id="tip-sinta" hidden>Siapkan satu angka dari kasus untuk setiap pendapatmu. Sinta melunak begitu kamu menyebut fakta.</p>
+        </article>
+        <article class="persona-card c-dimas" data-reveal>
+          <div class="persona-top"><span class="avatar" aria-hidden="true">D</span><div><h3>Dimas</h3><div class="trait">Diam sampai ditanya</div></div></div>
+          <blockquote>(Diam. Padahal dia sudah melihat risiko yang belum disebut siapa pun.)</blockquote>
+          <button class="tip-toggle" type="button" aria-expanded="false" aria-controls="tip-dimas">Cara menghadapinya</button>
+          <p class="tip" id="tip-dimas" hidden>Sebut namanya dan tanya pendapatnya. Assessor mencatat siapa yang memberi ruang bagi peserta yang pendiam.</p>
+        </article>
+        <article class="persona-card c-ayu" data-reveal>
+          <div class="persona-top"><span class="avatar" aria-hidden="true">A</span><div><h3>Ayu</h3><div class="trait">Ingin cepat sepakat</div></div></div>
+          <blockquote>"Semua ada benarnya. Kita gabung saja, ya?"</blockquote>
+          <button class="tip-toggle" type="button" aria-expanded="false" aria-controls="tip-ayu">Cara menghadapinya</button>
+          <p class="tip" id="tip-ayu" hidden>Sepakat terlalu cepat sama buruknya dengan tidak sepakat. Minta kelompok menyebut alasan sebelum memutuskan.</p>
+        </article>
+        <article class="assessor-card" data-reveal>
+          <div>
+            <h3>Dan satu assessor yang mencatat semuanya.</h3>
+            <p>Bukan cuma apa yang kamu katakan, tapi kapan kamu bicara, siapa yang kamu tanggapi, dan apakah kelompok sampai pada keputusan.</p>
+          </div>
+          <ol class="notes" aria-label="Contoh catatan assessor">
+            <li><time>00:48</time><span>Mengusulkan alur diskusi sebelum peserta lain bicara.</span></li>
+            <li><time>02:31</time><span>Memakai angka stok 6 hari untuk menyanggah Raka.</span></li>
+            <li><time>04:05</time><span>Tidak menanggapi pertanyaan Sinta soal biaya.</span></li>
+            <li><time>05:40</time><span>Merangkum dan meminta persetujuan kelompok.</span></li>
+          </ol>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="session" id="sesi">
     <div class="wrap">
-      <div class="eyebrow-plain">Satu sesi LGD, menit demi menit</div>
-      <h2>Semirip ruang seleksi yang asli.</h2>
-      <div class="timeline">
-        <div class="seg"><div class="min">Menit 0-5</div><h3>Baca kasus</h3><p>Studi kasus gaya seleksi MT dan BUMN, dengan waktu baca terbatas seperti di ruang seleksi.</p></div>
-        <div class="seg mid"><div class="min">Menit 5-25</div><h3>Diskusi dengan empat peserta AI</h3><p>Masing-masing punya watak sendiri, dan tidak ada yang menunggumu siap.</p>
-          <div class="personas"><span>Raka, suka memotong</span><span>Sinta, selalu minta data</span><span>Dimas, diam sampai ditanya</span><span>Ayu, ingin cepat sepakat</span></div></div>
-        <div class="seg end"><div class="min">Menit 25-27</div><h3>Rapor</h3><p>Nilai per aspek, kutipan ucapanmu sebagai bukti, dan apa yang perlu diubah di sesi berikutnya.</p></div>
+      <div data-reveal>
+        <div class="eyebrow">Satu sesi LGD</div>
+        <h2 class="h-section">Semirip ruang seleksi yang asli.</h2>
       </div>
+      <ol class="steps" data-reveal>
+        <li><div class="step-bar"></div><div class="min">Menit 0-1</div><h3>Baca kasus</h3><p>Studi kasus gaya seleksi MT dan BUMN, dengan waktu baca terbatas.</p></li>
+        <li><div class="step-bar"></div><div class="min">Menit 1-7</div><h3>Diskusi dengan empat peserta AI</h3><p>Masing-masing punya watak sendiri. Kamu bisa mengetik atau bicara, dan mereka menanggapi namamu.</p></li>
+        <li><div class="step-bar"></div><div class="min">Menit 7</div><h3>Rapor</h3><p>Nilai per aspek, kutipan ucapanmu, dan dua hal untuk dilatih berikutnya.</p></li>
+      </ol>
     </div>
   </section>
 
-  <section class="report">
-    <div class="wrap">
-      <div>
-        <h2>Feedback jujur, bukan basa-basi.</h2>
-        <p class="lede">Setiap nilai disertai kalimat yang kamu ucapkan sendiri, jadi kamu tahu persis bagian mana yang harus diperbaiki. Rubriknya disusun dari aspek yang biasa dinilai assessor, dan sedang dikalibrasi bersama assessor dan HR.</p>
+  <section class="report" id="rapor">
+    <div class="wrap report-grid">
+      <div data-reveal>
+        <div class="eyebrow">Rapor</div>
+        <h2 class="h-section">Sekali lihat, kamu tahu harus latihan apa.</h2>
+        <p class="lede">Bentuk hexagon menunjukkan profilmu: makin luas, makin kuat. Setiap nilai disertai kalimat yang kamu ucapkan sendiri. Rubriknya disusun dari aspek yang biasa dinilai assessor, dan sedang dikalibrasi bersama assessor dan HR.</p>
+        <ul class="aspects">
+          <li><b>Inisiatif</b><span>Kapan kamu mulai bicara dan membuka arah.</span></li>
+          <li><b>Analisis</b><span>Memakai fakta dan angka dari kasus.</span></li>
+          <li><b>Komunikasi</b><span>Ringkas, jelas, mudah diikuti.</span></li>
+          <li><b>Kerja tim</b><span>Memberi ruang dan membangun dari pendapat lain.</span></li>
+          <li><b>Kepemimpinan</b><span>Mengarahkan tanpa mendominasi.</span></li>
+          <li><b>Keputusan</b><span>Mendorong kelompok sampai sepakat.</span></li>
+        </ul>
       </div>
-      <ul class="aspects">
-        <li><b>Inisiatif</b><span>Kapan kamu mulai bicara, dan apakah kamu membuka arah diskusi.</span></li>
-        <li><b>Analisis</b><span>Apakah argumenmu memakai fakta dan angka dari kasus.</span></li>
-        <li><b>Komunikasi</b><span>Ringkas, jelas, dan mudah diikuti peserta lain.</span></li>
-        <li><b>Kerja tim</b><span>Memberi ruang, merangkum, dan membangun dari pendapat orang lain.</span></li>
-        <li><b>Kepemimpinan</b><span>Mengarahkan kelompok tanpa mendominasi.</span></li>
-        <li><b>Keputusan</b><span>Apakah kelompok sampai pada kesimpulan, dan seberapa besar peranmu.</span></li>
-      </ul>
+      <figure class="report-card" data-reveal style="margin:0">
+        <div class="report-card-head"><h3>Rapor sesi #4</h3><span>Contoh</span></div>
+        <div class="report-radar" id="report-radar"></div>
+        <div class="tier-row" id="report-tiers"></div>
+        <div class="quote-card"><b>Bukti untuk Kerja tim</b><q>Dimas, dari tadi belum bicara. Menurutmu bagaimana?</q><small>Kamu memberi ruang bagi peserta yang diam. Berikutnya: usulkan keputusan sebelum menit kelima.</small></div>
+      </figure>
     </div>
   </section>
 
-  <section class="versus">
-    <div class="wrap">
-      <div>
-        <h2>Ini latihan, bukan contekan.</h2>
+  <section class="versus on-dark">
+    <div class="wrap versus-grid">
+      <div data-reveal>
+        <div class="eyebrow">Bukan contekan</div>
+        <h2 class="h-section">Ini latihan, bukan bisikan jawaban.</h2>
         <p>Ada AI yang membisikkan jawaban saat interview online. Itu tidak menolong di ruang seleksi, saat kamu duduk berhadapan dengan assessor dan tujuh pelamar lain. Shortlisted melatih kemampuanmu sendiri, jadi yang kamu bawa ke hari H adalah jam terbang.</p>
       </div>
-      <dl>
-        <dt>Juga untuk interview</dt><dd>Interview behavioral, motivasi, dan user, dengan pertanyaan yang disesuaikan dengan CV dan perusahaan tujuanmu.</dd>
-        <dt>Bahasa Indonesia dan Inggris</dt><dd>Banyak LGD di perusahaan multinasional berbahasa Inggris. Kamu yang memilih.</dd>
-        <dt>Suara atau teks</dt><dd>Pakai suara untuk simulasi penuh, atau mode teks saat kamu di tempat ramai.</dd>
+      <dl data-reveal>
+        <div><dt>Juga untuk interview</dt><dd>Interview behavioral, motivasi, dan user, dengan pertanyaan yang disesuaikan dengan CV dan perusahaan tujuanmu.</dd></div>
+        <div><dt>Bahasa Indonesia dan Inggris</dt><dd>Banyak LGD di perusahaan multinasional berbahasa Inggris. Kamu yang memilih.</dd></div>
+        <div><dt>Suara atau teks</dt><dd>Pakai suara untuk simulasi penuh, atau mode teks saat kamu di tempat ramai.</dd></div>
       </dl>
     </div>
   </section>
 
   <section class="pricing" id="harga">
     <div class="wrap">
-      <h2>Kunci harga pre-sale.</h2>
-      <p class="presale">Shortlisted sedang dibangun. Ikut pre-sale, dapat akses pertama, dan harganya terkunci. Kalau kami batal meluncurkan, uangmu kembali penuh. Detailnya ada di <a href="syarat.html">syarat pre-sale</a>.</p>
-      <div class="plans">
+      <div data-reveal>
+        <div class="eyebrow">Pre-sale</div>
+        <h2 class="h-section">Kunci harga pre-sale.</h2>
+        <p class="presale">Shortlisted sedang dibangun. Ikut pre-sale, dapat akses pertama, dan harganya terkunci. Kalau kami batal meluncurkan, uangmu kembali penuh. Detailnya ada di <a href="syarat.html">syarat pre-sale</a>.</p>
+      </div>
+      <div class="plans" data-reveal>
         <div class="plan main">
+          <span class="tag">Paling pas</span>
           <h3>Siap Seleksi</h3>
           <div class="price">Rp49.000 <small>/ 30 hari</small></div>
           <ul>
@@ -366,7 +266,7 @@
             <li>8 sesi teks (FGD atau latihan soal)</li>
             <li>Rapor lengkap setiap sesi</li>
           </ul>
-          <a class="btn btn-primary" data-plan="siap" href="#harga">Ikut pre-sale</a>
+          <a class="btn btn-dark" data-plan="siap" href="#harga">Ikut pre-sale</a>
         </div>
         <div class="plan">
           <h3>Intensif</h3>
@@ -377,40 +277,60 @@
             <li>15 sesi teks</li>
             <li>Untuk yang sudah punya jadwal seleksi</li>
           </ul>
-          <a class="btn btn-primary" data-plan="intensif" href="#harga">Ikut pre-sale</a>
+          <a class="btn btn-dark" data-plan="intensif" href="#harga">Ikut pre-sale</a>
         </div>
       </div>
-      <p class="free-line">Mau coba dulu? Akun gratis mendapat 1 sesi LGD teks dan 1 interview teks begitu Shortlisted dibuka.</p>
+      <p class="free-line">Mau coba dulu? <a href="demo/">Demo LGD teks</a> bisa dimainkan sekarang, gratis.</p>
     </div>
   </section>
 
   <section class="relate">
     <div class="wrap">
-      <h2>Kalau ini terdengar seperti kamu</h2>
-      <ul>
+      <h2 class="h-section" data-reveal>Kalau ini terdengar seperti kamu</h2>
+      <ul data-reveal>
         <li>Jawaban untuk "ceritakan tentang dirimu" sudah kamu hafal. Tapi kamu belum pernah duduk di FGD dengan lima orang yang sama-sama ingin didengar.</li>
         <li>Tes online sudah lewat, undangan FGD sudah masuk, dan kamu belum pernah latihan sekali pun.</li>
         <li>Kampusmu tidak punya alumni yang bisa kamu ajak mock session, dan kamu tidak mau latihan pertamamu terjadi di hari H.</li>
       </ul>
-      <p class="close">Shortlisted memberimu latihan pertama sampai kesepuluh sebelum hari itu datang.</p>
     </div>
   </section>
 
-  <section class="faq">
+  <section class="faq" id="faq">
+    <div class="wrap faq-grid">
+      <div data-reveal>
+        <div class="eyebrow">FAQ</div>
+        <h2 class="h-section">Pertanyaan</h2>
+      </div>
+      <div data-reveal>
+        <details><summary>Apa bedanya dengan latihan di ChatGPT?</summary><p>ChatGPT bisa diajak bermain peran, tapi hanya satu suara, tanpa batas waktu, tanpa studi kasus gaya seleksi, dan tanpa rubrik penilaian. Shortlisted menjalankan empat peserta dengan watak berbeda dan memberi rapor per aspek.</p></details>
+        <details><summary>Apakah saya pasti lolos kalau pakai Shortlisted?</summary><p>Tidak, dan tidak ada yang bisa menjanjikan itu. Shortlisted membuatmu lebih siap lewat latihan yang mirip aslinya dan feedback yang jujur.</p></details>
+        <details><summary>Kapan Shortlisted bisa dipakai?</summary><p>Demo LGD teks sudah bisa dimainkan. Peserta pre-sale mendapat akses pertama ke versi lengkap. Tanggal peluncuran dikirim lewat email. Kalau peluncuran batal, uangmu kembali penuh.</p></details>
+        <details><summary>Bagaimana dengan rekaman suara saya?</summary><p>Rekaman dipakai untuk membuat rapor, lalu dihapus otomatis setelah 30 hari kecuali kamu memilih menyimpannya. Baca selengkapnya di <a href="privasi.html">kebijakan privasi</a>.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
     <div class="wrap">
-      <h2>Pertanyaan</h2>
-      <details><summary>Apa bedanya dengan latihan di ChatGPT?</summary><p>ChatGPT bisa diajak bermain peran, tapi hanya satu suara, tanpa batas waktu, tanpa studi kasus gaya seleksi, dan tanpa rubrik penilaian. Shortlisted menjalankan empat peserta dengan watak berbeda dan memberi rapor per aspek.</p></details>
-      <details><summary>Apakah saya pasti lolos kalau pakai Shortlisted?</summary><p>Tidak, dan tidak ada yang bisa menjanjikan itu. Shortlisted membuatmu lebih siap lewat latihan yang mirip aslinya dan feedback yang jujur.</p></details>
-      <details><summary>Kapan Shortlisted bisa dipakai?</summary><p>Peserta pre-sale mendapat akses pertama. Tanggal peluncuran dikirim lewat email. Kalau peluncuran batal, uangmu kembali penuh.</p></details>
-      <details><summary>Bagaimana dengan rekaman suara saya?</summary><p>Rekaman dipakai untuk membuat rapor, lalu dihapus otomatis setelah 30 hari kecuali kamu memilih menyimpannya. Baca selengkapnya di <a href="privasi.html">kebijakan privasi</a>.</p></details>
+      <div class="final-card" data-reveal>
+        <h2>Latihan pertamamu jangan di hari H.</h2>
+        <p>Main satu sesi LGD sekarang. Gratis, tanpa daftar, dan rapornya langsung keluar.</p>
+        <div class="actions">
+          <a class="btn btn-dark" href="demo/">Main demo LGD <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-line" href="#harga">Lihat harga pre-sale</a>
+        </div>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <span>shortlisted · latihan seleksi kerja</span>
-    <nav><a href="syarat.html">Syarat pre-sale</a><a href="privasi.html">Privasi</a></nav>
+    <div class="foot-row">
+      <span>shortlisted · latihan seleksi kerja</span>
+      <nav aria-label="Tautan kaki"><a href="demo/">Demo</a><a href="syarat.html">Syarat pre-sale</a><a href="privasi.html">Privasi</a></nav>
+    </div>
+    <div class="wordmark" aria-hidden="true">shortlisted</div>
   </div>
 </footer>
 
@@ -431,5 +351,6 @@
     button.addEventListener("click", (event) => event.preventDefault());
   });
 </script>
+<script type="module" src="assets/landing.js"></script>
 </body>
 </html>
