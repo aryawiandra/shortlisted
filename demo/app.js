@@ -82,7 +82,8 @@ const access = Object.freeze({
 const api = createApiClient({ getAccessCode: () => accessCode });
 const sounds = createSounds();
 const notifier = createNotifier($("notifications"), sounds);
-const voice = createVoiceEngine();
+let onVoiceStatus = () => {};
+const voice = createVoiceEngine({ getAccessCode: () => accessCode, onStatus: (status) => onVoiceStatus(status) });
 const camera = createCamera();
 
 let app = Object.freeze({ name: "Kandidat", lastOutcome: null, lastCompanyId: null });
@@ -104,6 +105,7 @@ function tickClock() {
 // Opening any email means the applicant has seen the news, so the banners can go.
 const mail = createMail({ onAction, onOpen: () => notifier.clear() });
 const meet = createMeet({ api, voice, camera, sounds, access, onMode: setMode });
+onVoiceStatus = meet.voiceStatus;
 
 function deliver(email) {
   tickClock();

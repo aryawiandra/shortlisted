@@ -33,7 +33,24 @@ Copy `.env.example` to `.env` for local runs. On Vercel, set the same names unde
 
 ## Voices
 
-The AI participants speak through the browser's built-in speech synthesis (`demo/voice.js`): free, no download, and good on Edge (natural Indonesian voices) and Android. Where a device has no Indonesian voice, the lobby turns voices off by default and captions carry the meeting. Open-source options checked for a server-side voice later (Indonesian support, license):
+The participants speak with Microsoft's free neural voices (the "Read Aloud" voices built into Edge), served by `GET /api/tts?s=<speaker>&t=<text>` through the `msedge-tts` package (MIT). No key and no cost.
+
+| Speaker | Voice | Why |
+|---|---|---|
+| Raka | `id-ID-ArdiNeural`, 8% faster | Native Indonesian male; the fast talker |
+| Sinta | `id-ID-GadisNeural` | Native Indonesian female |
+| Dimas | `en-US-BrianMultilingualNeural`, 6% slower, softer | Distinct calm male voice |
+| Ayu | `en-US-EmmaMultilingualNeural` | Distinct warm female voice |
+| Ratna (assessor) | `en-US-AvaMultilingualNeural`, 4% slower | Distinct measured female voice |
+
+The multilingual voices read Indonesian with zero errors in a Whisper intelligibility test. Each person has their own voice: the old browser voices were pitch-shifted copies, which is what made them sound robotic.
+
+- Speed: the assessor's script is synthesized while the applicant is in the lobby, replies are fetched as soon as their text arrives, and the server keeps one warm connection per voice. Responses are cacheable at Vercel's edge, so a line spoken once is free and instant afterwards.
+- Failure: requests time out after 8 seconds, and after two failures the meeting continues on captions alone. The lobby says which state it is in.
+- Caveat: this is an unofficial endpoint and can change without notice. The same voice names exist in Azure Speech, whose free tier (F0) is the official route if needed.
+- Limits: `DEMO_TTS_RATE_MAX` (default 200 lines per 10 minutes per IP); `DEMO_ACCESS_CODE` also guards this route.
+
+Other free options checked (Indonesian support, license):
 
 | Project | Indonesian | License note |
 |---|---|---|
@@ -42,7 +59,8 @@ The AI participants speak through the browser's built-in speech synthesis (`demo
 | facebook/mms-tts-ind | Yes | CC-BY-NC-4.0, so not for commercial use. |
 | resemble-ai/chatterbox | Malay only, not Indonesian | MIT. |
 | hexgrad/kokoro | No | Apache-2.0. |
-| rany2/edge-tts | Yes (Ardi, Gadis) | Uses an unofficial Microsoft endpoint: fine for prototypes, not for production. |
+| rany2/edge-tts (Python) / msedge-tts (Node) | Yes (Ardi, Gadis, plus multilingual voices) | In use. Unofficial Microsoft endpoint; Azure Speech F0 is the official equivalent. |
+| Gemini TTS (Google) | Yes | Very natural, has a free tier, but needs an API key and free-tier input may be used by Google. Not tested here. |
 
 ## Privacy
 

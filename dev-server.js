@@ -30,6 +30,7 @@ const handlers = {
   turn: (await import("./api/turn.js")).default,
   score: (await import("./api/score.js")).default,
   status: (await import("./api/status.js")).default,
+  tts: (await import("./api/tts.js")).default,
 };
 
 function readBody(req) {

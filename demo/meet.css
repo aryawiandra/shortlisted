@@ -82,6 +82,7 @@
 .captions.is-interim #cap-text { color: #E6DDBF; font-style: italic; }
 
 .room-status { position: absolute; z-index: 5; top: 14px; left: 50%; transform: translateX(-50%); margin: 0; padding: 8px 14px; border-radius: 10px; background: rgba(10, 8, 4, 0.9); font-size: 14px; display: flex; gap: 10px; align-items: center; max-width: calc(100% - 32px); }
+.room-status.is-progress { animation: fade 200ms 450ms both; }
 .link { border: 0; background: none; color: var(--sun-300); font-weight: 700; text-decoration: underline; padding: 6px 4px; }
 
 .composer { justify-self: center; width: min(760px, calc(100% - 32px)); display: flex; gap: 8px; margin-top: 8px; }

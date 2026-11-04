@@ -30,6 +30,7 @@ export function createSession({ caseId, name, minutes, readSec, api, voice, onCh
     listening: false,
     busy: false,
     thinking: false,
+    connecting: false,
     error: null,
     canRetry: false,
     mode: null,
@@ -48,9 +49,21 @@ export function createSession({ caseId, name, minutes, readSec, api, voice, onCh
   const elapsedSec = () => totalSec - state.remainingSec;
   const live = () => !ended && state.phase !== "closing";
 
+  // The line joins the transcript and the caption at the moment the voice starts, so text
+  // and sound stay together; a line cut off before it started was never said.
   async function say(speaker, text) {
-    set({ messages: Object.freeze([...state.messages, Object.freeze({ speaker, text })]), speaker, caption: Object.freeze({ speaker, text }) });
-    const finished = await voice.speak(speaker, text);
+    if (!state.speaker) set({ connecting: true });
+    const finished = await voice.speak(speaker, text, {
+      onStart: () =>
+        set({
+          messages: Object.freeze([...state.messages, Object.freeze({ speaker, text })]),
+          speaker,
+          caption: Object.freeze({ speaker, text }),
+          connecting: false,
+          thinking: false,
+        }),
+    });
+    if (state.connecting) set({ connecting: false });
     if (state.speaker === speaker) set({ speaker: null });
     lastActivityAt = Date.now();
     return finished;
@@ -91,13 +104,14 @@ export function createSession({ caseId, name, minutes, readSec, api, voice, onCh
       return;
     }
     if (token !== turnToken || state.phase !== "discussion" || ended) return;
-    set({ mode: data.mode, thinking: false });
+    set({ mode: data.mode });
+    data.replies.forEach((reply) => voice.prefetch(reply.speaker, reply.text));
     for (const [index, reply] of data.replies.entries()) {
       if (index > 0) await pause(GAP_MS);
       if (token !== turnToken || state.phase !== "discussion" || state.listening || ended) return;
       await say(reply.speaker, reply.text);
     }
-    if (token === turnToken) set({ busy: false });
+    if (token === turnToken) set({ busy: false, thinking: false });
   }
 
   async function beginDiscussion() {
@@ -138,11 +152,15 @@ export function createSession({ caseId, name, minutes, readSec, api, voice, onCh
   async function start() {
     // Fetch the participants' opening while the assessor talks; a bad passcode surfaces now.
     openingReplies = fetchTurn();
-    openingReplies.catch((error) => {
-      if (error.status === 401 && !ended) handleError(error);
-    });
+    openingReplies
+      .then((data) => data.replies.forEach((reply) => voice.prefetch(reply.speaker, reply.text)))
+      .catch((error) => {
+        if (error.status === 401 && !ended) handleError(error);
+      });
     timer = setInterval(tick, TICK_MS);
-    const [greeting, ...rest] = assessorOpening({ name, readSec, minutes });
+    const opening = assessorOpening({ name, readSec, minutes });
+    for (const line of [...opening, DISCUSSION_START, assessorClosing({ name })]) voice.prefetch(ASSESSOR.id, line);
+    const [greeting, ...rest] = opening;
     await say(ASSESSOR.id, greeting);
     if (!live()) return;
     set({ sharing: true });

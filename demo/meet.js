@@ -3,7 +3,7 @@
 
 import { PERSONAS } from "../lib/personas.js";
 import { formatClock } from "./format.js";
-import { ASSESSOR } from "./meeting-plan.js";
+import { ASSESSOR, DISCUSSION_START, assessorOpening } from "./meeting-plan.js";
 import { el, factList } from "./render.js";
 import { createSession } from "./session.js";
 import { createDictation } from "./speech.js";
@@ -99,19 +99,32 @@ export function createMeet({ api, voice, camera, sounds, access, onMode }) {
     $("meet-timer").textContent = formatClock(ctx.minutes * 60);
     $("meet-timer").classList.remove("is-urgent");
     $("meet-rec").hidden = true;
-    const indonesian = voice.voiceCount();
-    if (voice.available && indonesian === 0) voice.setEnabled(false);
     $("lobby-voice").setAttribute("aria-pressed", String(voice.isEnabled()));
     $("lobby-voice").disabled = !voice.available;
-    $("lobby-voice-note").textContent = !voice.available
-      ? "Browser ini tidak bisa memutar suara, jadi peserta tampil sebagai teks."
-      : indonesian === 0
-        ? "Perangkat ini tidak punya suara Bahasa Indonesia. Nyalakan kalau tetap ingin mendengar suara bawaan browser."
-        : "Peserta berbicara dengan suara Bahasa Indonesia dari perangkatmu.";
+    // Synthesize the assessor's script while the applicant is still in the lobby, so the
+    // meeting starts speaking the moment they join. It also proves the voices work.
+    for (const line of [...assessorOpening({ name: ctx.name, readSec: ctx.readSec, minutes: ctx.minutes }), DISCUSSION_START]) {
+      voice.prefetch(ASSESSOR.id, line);
+    }
+    voiceStatus(voice.status());
     $("lobby-mic-note").textContent = dictation
       ? "Saat diskusi, tahan tombol Bicara (atau tombol spasi) selama kamu berbicara."
       : "Browser ini tidak mendukung input suara. Kamu bisa ikut dengan mengetik.";
     (needCode ? $("lobby-code") : $("lobby-join")).focus({ preventScroll: true });
+  }
+
+  // Real voice state, as reported by the voice engine: loading, ready, or unavailable.
+  function voiceStatus(status) {
+    if (!ctx) return;
+    const note = !voice.available
+      ? "Browser ini tidak bisa memutar suara, jadi peserta tampil sebagai teks."
+      : status === "ready"
+        ? "Suara peserta siap. Pakai headphone supaya mikrofon tidak ikut menangkap suara mereka."
+        : status === "unavailable"
+          ? "Suara peserta sedang tidak tersedia. Teks tetap tampil, jadi kamu tetap bisa ikut."
+          : "Menyiapkan suara peserta…";
+    $("lobby-voice-note").textContent = note;
+    if (status === "unavailable" && session) notice("Suara peserta sedang tidak tersedia. Teks tetap tampil.");
   }
 
   async function toggleCamera() {
@@ -143,6 +156,7 @@ export function createMeet({ api, voice, camera, sounds, access, onMode }) {
 
   function join(event) {
     event.preventDefault();
+    voice.unlock(); // inside the click, so later lines may play on Safari and iOS
     if (!$("lobby-code-field").hidden) {
       const code = $("lobby-code").value.trim();
       if (!code) {
@@ -243,8 +257,11 @@ export function createMeet({ api, voice, camera, sounds, access, onMode }) {
   }
 
   function renderStatus(state) {
-    const text = state.error ?? ui.notice ?? (state.thinking && !state.speaker ? "Peserta lain sedang menanggapi…" : null);
+    const waiting = !state.speaker && (state.thinking ? "Peserta lain sedang menanggapi…" : state.connecting ? "Menyambungkan suara…" : null);
+    const text = state.error ?? ui.notice ?? waiting;
     $("room-status").hidden = !text;
+    // Progress messages fade in after a short delay, so a fast answer never flashes one.
+    $("room-status").classList.toggle("is-progress", !state.error && !ui.notice && Boolean(waiting));
     $("room-status-text").textContent = text ?? "";
     $("room-retry").hidden = !state.canRetry;
   }
@@ -295,6 +312,7 @@ export function createMeet({ api, voice, camera, sounds, access, onMode }) {
     session?.destroy();
     session = null;
     dictation?.abort();
+    voice.reset();
     camera.stop();
     syncCamera();
     const done = ctx?.resolve;
@@ -406,5 +424,5 @@ export function createMeet({ api, voice, camera, sounds, access, onMode }) {
     });
   }
 
-  return Object.freeze({ open, isOpen: () => !win.hidden });
+  return Object.freeze({ open, isOpen: () => !win.hidden, voiceStatus });
 }

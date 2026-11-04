@@ -10,7 +10,7 @@ Direction from the founder (4 Nov 2026): the demo should feel like the applicant
 2. **Inbox**: two older emails are already there. The Arunika Energi invitation arrives live: a notification banner plus a chime, and the row slides into the list. A second invitation (Rinjani Finansial, the other case) sits unread from yesterday.
 3. **Invitation email**: the schedule block and a "Gabung meeting" link. The link is the only way into the product.
 4. **Lobby**: self-view (camera only if the applicant turns it on), name, voice and caption toggles, and the meeting passcode when the server requires one.
-5. **Meeting**: the assessor opens, shares the case for the reading time, then four AI participants discuss with the applicant. Voices come from the browser's speech synthesis, with captions. The applicant holds the mic button (or Space) to talk, or types.
+5. **Meeting**: the assessor opens, shares the case for the reading time, then four AI participants discuss with the applicant. Each person has a distinct natural neural voice (served by `/api/tts`), with captions that start with the sound. The applicant holds the mic button (or Space) to talk, or types.
 6. **After the meeting**: the window closes back toward the email it came from. The inbox checks for mail, then the rapor email arrives from Shortlisted, with a notification. It holds the radar, the tiers, and quotes from the applicant's own words.
 
 ## Decisions (one line each, R-31)
@@ -21,6 +21,7 @@ Direction from the founder (4 Nov 2026): the demo should feel like the applicant
 - **Light inbox, dark meeting**: video-call apps use dark surfaces so faces and captions read; the inbox stays light like a real mail app.
 - **Wallpaper in brand yellow**: the one identity motif that ties the fictional laptop to Shortlisted.
 - **Glass on one surface only, the notification banner**: it floats over the inbox while it changes beneath it (R-10). The meeting control bar sits below the stage, not over it, so it stays solid.
+- **One real voice per person, no pitch shifting** (founder feedback 4 Nov 2026: the browser voices sounded robotic and hard to understand). Cast and reasons in the landing README, section Voices.
 - **Initials avatars for every person and company**: honest placeholders, no invented faces or logos (R-23).
 - **Fictional companies with `.test` addresses** and a visible "Simulasi" label in the menu bar: immersive, never mistakable for a real recruiter.
 

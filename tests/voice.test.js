@@ -1,71 +1,118 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { VOICE_PROFILES, assignVoices, estimateSpeechMs, genderOf, rankVoices, splitForSpeech } from "../demo/voice.js";
+import { createVoiceEngine, estimateSpeechMs, ttsUrl } from "../demo/voice.js";
 
-const voice = (name, lang, extra = {}) => ({ name, lang, voiceURI: name, localService: true, ...extra });
-const ARDI = voice("Microsoft Ardi Online (Natural) - Indonesian (Indonesia)", "id-ID", { localService: false });
-const GADIS = voice("Microsoft Gadis Online (Natural) - Indonesian (Indonesia)", "id-ID", { localService: false });
-const GOOGLE = voice("Google Bahasa Indonesia", "id-ID", { localService: false });
-const DAMAYANTI = voice("Damayanti", "id-ID");
-const SPEAKERS = ["raka", "sinta", "dimas", "ayu", "ratna"];
+const noSleep = () => Promise.resolve();
 
-test("rankVoices keeps only Indonesian voices and puts natural voices first", () => {
-  const ranked = rankVoices([voice("Samantha", "en-US"), DAMAYANTI, GOOGLE, voice("Amira", "ms-MY"), ARDI, voice("Android id", "id_ID")]);
-  assert.deepEqual(ranked.map((v) => v.name), [ARDI.name, GOOGLE.name, DAMAYANTI.name, "Android id"]);
-});
+// Plays instantly and ends on the next tick, unless told to hang until paused.
+function fakeAudioClass({ hang = false } = {}) {
+  return class FakeAudio {
+    constructor() {
+      this.src = "";
+      this.volume = 1;
+      this.paused = true;
+      FakeAudio.instances.push(this);
+    }
+    play() {
+      this.paused = false;
+      if (!hang) setTimeout(() => this.onended?.(), 0);
+      return Promise.resolve();
+    }
+    pause() {
+      this.paused = true;
+    }
+    static instances = [];
+  };
+}
 
-test("rankVoices does not mutate its input", () => {
-  const input = Object.freeze([DAMAYANTI, ARDI]);
-  assert.doesNotThrow(() => rankVoices(input));
-});
+function fakeFetch({ fail = false } = {}) {
+  const calls = [];
+  const impl = async (url, options) => {
+    calls.push({ url, options });
+    if (fail) return new Response(JSON.stringify({ error: "x" }), { status: 502 });
+    return new Response(new Uint8Array([0xff, 0xf3, 1]), { status: 200, headers: { "Content-Type": "audio/mpeg" } });
+  };
+  return { impl, calls };
+}
 
-test("genderOf reads common Indonesian voice names", () => {
-  assert.equal(genderOf(ARDI), "m");
-  assert.equal(genderOf(GADIS), "f");
-  assert.equal(genderOf(DAMAYANTI), "f");
-  assert.equal(genderOf(voice("Mystery voice", "id-ID")), null);
-});
-
-test("assignVoices gives every speaker a profile and prefers a matching gender", () => {
-  const cast = assignVoices([ARDI, GADIS]);
-  assert.deepEqual(Object.keys(cast).sort(), [...SPEAKERS].sort());
-  assert.equal(cast.raka.voice, ARDI);
-  assert.equal(cast.dimas.voice, ARDI);
-  assert.equal(cast.sinta.voice, GADIS);
-  assert.equal(cast.ayu.voice, GADIS);
-  for (const id of SPEAKERS) {
-    assert.ok(cast[id].rate > 0.5 && cast[id].rate < 1.5);
-    assert.ok(cast[id].pitch > 0.5 && cast[id].pitch < 1.6);
-  }
-});
-
-test("assignVoices still varies speakers when only one voice exists, and works with none", () => {
-  const single = assignVoices([GOOGLE]);
-  assert.ok(SPEAKERS.every((id) => single[id].voice === GOOGLE));
-  assert.notEqual(single.raka.pitch, single.ayu.pitch);
-  const none = assignVoices([]);
-  assert.ok(SPEAKERS.every((id) => none[id].voice === null && none[id].rate > 0));
-});
-
-test("every profile names a gender the cast can match", () => {
-  assert.ok(Object.values(VOICE_PROFILES).every((p) => p.gender === "m" || p.gender === "f"));
-});
-
-test("splitForSpeech keeps every word, in order, in chunks no longer than the limit", () => {
-  const text =
-    "Saya usul kita mulai dari angka, karena stok tinggal enam hari dan anggaran dipotong lima belas persen. Lalu kita bandingkan dua opsi satu per satu. Setuju?";
-  const chunks = splitForSpeech(text, 60);
-  assert.ok(chunks.length >= 3);
-  assert.ok(chunks.every((chunk) => chunk.length <= 60 && chunk.trim() === chunk && chunk.length > 0));
-  assert.equal(chunks.join(" "), text);
-  assert.deepEqual(splitForSpeech("   "), []);
+test("ttsUrl names the speaker and encodes the text", () => {
+  assert.equal(ttsUrl("raka", "Halo & selamat?"), "/api/tts?s=raka&t=Halo+%26+selamat%3F");
 });
 
 test("estimateSpeechMs grows with length and stays within bounds", () => {
-  const short = estimateSpeechMs("Oke.");
-  const long = estimateSpeechMs("kata ".repeat(40));
-  assert.ok(short >= 1200);
-  assert.ok(long > short);
+  assert.ok(estimateSpeechMs("Oke.") >= 1200);
+  assert.ok(estimateSpeechMs("kata ".repeat(40)) > estimateSpeechMs("kata ".repeat(5)));
   assert.ok(estimateSpeechMs("kata ".repeat(500)) <= 12000);
-  assert.ok(estimateSpeechMs("kata ".repeat(10), 1.2) < estimateSpeechMs("kata ".repeat(10), 1));
+});
+
+test("speak fetches the line, starts on play, and resolves true when it ends", async () => {
+  const fetch = fakeFetch();
+  let started = 0;
+  const voice = createVoiceEngine({ fetchImpl: fetch.impl, AudioCtor: fakeAudioClass(), getAccessCode: () => "kode", sleep: noSleep });
+  const finished = await voice.speak("sinta", "Datanya mana?", { onStart: () => (started += 1) });
+  assert.equal(finished, true);
+  assert.equal(started, 1);
+  assert.equal(fetch.calls.length, 1);
+  assert.equal(fetch.calls[0].url, ttsUrl("sinta", "Datanya mana?"));
+  assert.equal(fetch.calls[0].options.headers["x-demo-code"], "kode");
+});
+
+test("prefetch and speak share one request for the same line", async () => {
+  const fetch = fakeFetch();
+  const voice = createVoiceEngine({ fetchImpl: fetch.impl, AudioCtor: fakeAudioClass(), sleep: noSleep });
+  voice.prefetch("ayu", "Kita gabung saja?");
+  await voice.speak("ayu", "Kita gabung saja?");
+  assert.equal(fetch.calls.length, 1);
+});
+
+test("cancel cuts the current line off and resolves false", async () => {
+  const Audio = fakeAudioClass({ hang: true });
+  const voice = createVoiceEngine({ fetchImpl: fakeFetch().impl, AudioCtor: Audio, sleep: noSleep });
+  let resolveStarted;
+  const started = new Promise((resolve) => (resolveStarted = resolve));
+  const speaking = voice.speak("raka", "Sudahlah, sewa truk saja.", { onStart: resolveStarted });
+  await started;
+  voice.cancel();
+  assert.equal(await speaking, false);
+  assert.ok(Audio.instances.every((a) => a.paused));
+});
+
+test("when the voice server fails, the line still starts and the failure is reported once", async () => {
+  const statuses = [];
+  const voice = createVoiceEngine({ fetchImpl: fakeFetch({ fail: true }).impl, AudioCtor: fakeAudioClass(), sleep: noSleep, onStatus: (s) => statuses.push(s) });
+  let started = 0;
+  assert.equal(await voice.speak("dimas", "Mungkin kita mulai dari yang bisa dikerjakan.", { onStart: () => (started += 1) }), true);
+  await voice.speak("dimas", "Baris lain.");
+  assert.equal(started, 1);
+  assert.deepEqual(statuses, ["unavailable"]);
+});
+
+test("after two failures in a row the meeting stops calling the voice server", async () => {
+  const fetch = fakeFetch({ fail: true });
+  const voice = createVoiceEngine({ fetchImpl: fetch.impl, AudioCtor: fakeAudioClass(), sleep: noSleep });
+  for (const line of ["Satu.", "Dua.", "Tiga.", "Empat."]) await voice.speak("raka", line);
+  assert.equal(fetch.calls.length, 2);
+  await voice.reset(); // a new meeting tries again
+  await voice.speak("raka", "Lima.");
+  assert.equal(fetch.calls.length, 3);
+});
+
+test("a voice request that hangs is abandoned and the line goes on", async () => {
+  const hanging = (_url, { signal }) =>
+    new Promise((_resolve, reject) => signal.addEventListener("abort", () => reject(new Error("aborted"))));
+  const voice = createVoiceEngine({ fetchImpl: hanging, AudioCtor: fakeAudioClass(), sleep: noSleep, fetchTimeoutMs: 20 });
+  let started = false;
+  assert.equal(await voice.speak("ayu", "Halo.", { onStart: () => (started = true) }), true);
+  assert.equal(started, true);
+});
+
+test("with voices off, nothing is fetched and lines still keep their timing", async () => {
+  const fetch = fakeFetch();
+  const voice = createVoiceEngine({ fetchImpl: fetch.impl, AudioCtor: fakeAudioClass(), sleep: noSleep });
+  voice.setEnabled(false);
+  let started = false;
+  assert.equal(await voice.speak("raka", "Halo.", { onStart: () => (started = true) }), true);
+  voice.prefetch("raka", "Halo lagi.");
+  assert.equal(started, true);
+  assert.equal(fetch.calls.length, 0);
 });
