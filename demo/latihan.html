@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latihan kasus berwaktu | Shortlisted</title>
+<meta name="description" content="Baca satu kasus seleksi, jawab sebelum 120 detik habis, lalu dapat feedback per aspek. Gratis, tanpa daftar.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%279%27 fill=%27%231C1708%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276.5%27 fill=%27%23FFD43B%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+  :root { --night: #1C1708; --sun: #FFD43B; --sun-soft: #FFF3C4; --paper: #FFFBEB; --ink: #1C1708; --soft: #5A4F2E; --line: #E8DDB5; --amber: #8A5A00; --bar: #E0A800; --alert: #D9480F; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 "Instrument Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  main { width: min(760px, 100% - 32px); margin: 0 auto; padding: 32px 0 72px; }
+  a { color: var(--amber); }
+  h1, h2 { font-family: "Bricolage Grotesque", Georgia, serif; letter-spacing: -0.02em; line-height: 1.05; margin: 0; }
+  h1 { font-size: clamp(32px, 6vw, 48px); margin: 20px 0 8px; }
+  h2 { font-size: 24px; margin: 0 0 12px; }
+  .back { font-weight: 600; text-decoration: none; }
+  .lede { color: var(--soft); margin: 0 0 24px; }
+  .cases { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .case-btn { font: 600 15px "Instrument Sans", sans-serif; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+  .case-btn[aria-pressed="true"] { background: var(--night); color: var(--sun); border-color: var(--night); }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+  .card p { margin: 0 0 12px; }
+  .facts { margin: 0; padding-left: 20px; color: var(--soft); }
+  .btn { font: 600 16px "Instrument Sans", sans-serif; padding: 12px 24px; border-radius: 999px; border: 0; background: var(--night); color: var(--sun); cursor: pointer; text-decoration: none; display: inline-block; }
+  .btn.line { background: transparent; color: var(--ink); border: 1px solid var(--night); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .btn:focus-visible, .case-btn:focus-visible, textarea:focus-visible, input:focus-visible { outline: 3px solid var(--night); outline-offset: 2px; }
+  .timer { font: 800 40px "Bricolage Grotesque", Georgia, serif; font-variant-numeric: tabular-nums; }
+  .timer.low { color: var(--alert); }
+  textarea { width: 100%; min-height: 160px; font: inherit; padding: 12px; border: 1px solid var(--line); border-radius: 12px; resize: vertical; background: #fff; color: var(--ink); }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+  .count { color: var(--soft); font-size: 14px; }
+  .score { display: grid; grid-template-columns: 110px 1fr 28px; gap: 12px; align-items: center; margin: 12px 0 4px; font-weight: 600; }
+  .bar { height: 8px; border-radius: 4px; background: #F3ECD3; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--bar); border-radius: 4px; }
+  .bar i.low { background: var(--alert); }
+  .note { color: var(--soft); font-size: 15px; margin: 0 0 8px; }
+  .quote { font-style: normal; background: var(--sun-soft); border-radius: 8px; padding: 4px 8px; font-size: 15px; display: inline-block; margin-bottom: 8px; }
+  .mode { font-size: 13px; color: var(--soft); }
+  .error { color: var(--alert); font-weight: 600; margin: 12px 0 0; }
+  .code { margin-top: 12px; }
+  .code input { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; }
+  .cta { background: var(--sun); border-radius: 16px; padding: 24px; }
+  .cta p { margin: 0 0 12px; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main id="main">
+  <a class="back" href="../">← Kembali ke Shortlisted</a>
+  <h1>Latihan kasus berwaktu</h1>
+  <p class="lede">Baca satu kasus, tulis rekomendasimu dalam 120 detik, lalu lihat nilainya per aspek. Gratis dan tanpa daftar.</p>
+
+  <div class="cases" id="cases" role="group" aria-label="Pilih kasus"></div>
+
+  <section class="card" id="case-card" aria-labelledby="case-title">
+    <h2 id="case-title"></h2>
+    <p id="case-brief"></p>
+    <ul class="facts" id="case-facts"></ul>
+    <div class="row">
+      <button class="btn" id="start" type="button">Mulai 120 detik</button>
+    </div>
+  </section>
+
+  <section class="card" id="answer-card" hidden aria-labelledby="answer-title">
+    <div class="row" style="margin-top:0">
+      <h2 id="answer-title">Tulis rekomendasimu</h2>
+      <div class="timer" id="timer" role="timer" aria-live="off">2:00</div>
+    </div>
+    <label for="answer" class="note">Sebut pilihanmu, alasannya, dan angka dari kasus.</label>
+    <textarea id="answer" maxlength="1200" aria-describedby="count"></textarea>
+    <div class="row">
+      <span class="count" id="count">0 dari 1200 karakter</span>
+      <button class="btn" id="submit" type="button">Kirim jawaban</button>
+    </div>
+    <p class="error" id="error" role="alert" hidden></p>
+    <div class="code" id="code-box" hidden>
+      <label for="code">Demo ini butuh kode akses.</label>
+      <input id="code" type="password" autocomplete="off">
+    </div>
+  </section>
+
+  <section class="card" id="result-card" hidden aria-labelledby="result-title" aria-live="polite">
+    <h2 id="result-title">Hasil latihanmu</h2>
+    <p class="note" id="summary"></p>
+    <div id="scores"></div>
+    <h2 style="font-size:18px;margin-top:20px">Latih berikutnya</h2>
+    <ul class="facts" id="next-steps"></ul>
+    <p class="mode" id="mode"></p>
+    <div class="row">
+      <button class="btn" id="retry" type="button">Coba lagi</button>
+      <button class="btn line" id="other" type="button">Kasus lain</button>
+    </div>
+  </section>
+
+  <section class="cta" id="cta" hidden>
+    <p><strong>Mau latihan sebanyak ini tiap hari?</strong> Paket Siap Seleksi berisi 15 latihan kasus berwaktu, ditambah sesi LGD dan interview bersuara.</p>
+    <a class="btn" href="../#harga">Lihat harga pre-sale</a>
+  </section>
+</main>
+<script type="module" src="latihan.js"></script>
+</body>
+</html>

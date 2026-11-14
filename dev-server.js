@@ -29,6 +29,7 @@ const TYPES = {
 const handlers = {
   turn: (await import("./api/turn.js")).default,
   score: (await import("./api/score.js")).default,
+  drill: (await import("./api/drill.js")).default,
   status: (await import("./api/status.js")).default,
   tts: (await import("./api/tts.js")).default,
   checkout: (await import("./api/checkout.js")).default,

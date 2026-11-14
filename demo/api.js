@@ -43,5 +43,6 @@ export function createApiClient({ fetchImpl = (...args) => fetch(...args), getAc
     status: () => request("/api/status", { method: "GET" }),
     turn: (payload) => request("/api/turn", { payload }),
     score: (payload) => request("/api/score", { payload }),
+    drill: (payload) => request("/api/drill", { payload }),
   });
 }

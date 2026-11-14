@@ -4,7 +4,8 @@ Landing page and a working demo of an AI coach for Indonesian selection stages (
 
 - `index.html` and the legal pages: the pre-sale landing page.
 - `demo/`: an immersive selection simulation. An invitation email arrives in a simulated inbox, its link opens a video meeting (lobby, assessor, four AI participants with voices and captions, push-to-talk), and the rapor arrives afterwards as another email. Direction and reasons: [demo/DESIGN.md](demo/DESIGN.md).
-- `api/` + `lib/`: serverless functions (`/api/turn`, `/api/score`, `/api/status`) and their logic.
+- `demo/latihan.html`: timed case drill. The applicant reads one case, writes a recommendation in 120 seconds, and gets 1 to 5 scores for analysis, communication and decision with a quote from their own answer. Costs about one scorer call, which is why the paid plans can include 15 to 35 of them.
+- `api/` + `lib/`: serverless functions (`/api/turn`, `/api/score`, `/api/drill`, `/api/status`) and their logic.
 
 ## Run it locally
 
